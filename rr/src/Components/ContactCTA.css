@@ -1,0 +1,115 @@
+.contact-cta {
+  background: #0f172a;
+  padding: 10px 40px;
+  text-align: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.contact-cta-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  color: #ffffff;
+}
+
+.contact-cta-title {
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.contact-cta-subtitle {
+  font-size: 15px;
+  color: #cbd5e1;
+  margin-bottom: 36px;
+}
+
+/* Buttons */
+
+.contact-cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.contact-cta-btn {
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1.5px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.25s;
+}
+
+.contact-cta-btn:hover {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* Info */
+
+.contact-cta-info p {
+  font-size: 14px;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.contact-cta-info strong {
+  color: #ffffff;
+}
+
+/* =============================== */
+/* 0 - 600px (mobile)              */
+/* =============================== */
+@media (max-width: 600px) {
+  .contact-cta {
+    padding: 10px 20px;
+  }
+
+  .contact-cta-title {
+    font-size: 26px;
+  }
+
+  .contact-cta-subtitle {
+    font-size: 13px;
+  }
+
+  .contact-cta-buttons {
+    gap: 12px;
+  }
+
+  .contact-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* =============================== */
+/* 601 - 1024px (tablet)           */
+/* =============================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .contact-cta {
+    padding: 25px 32px;
+  }
+
+  .contact-cta-title {
+    font-size: 30px;
+  }
+}
+
+/* =============================== */
+/* 1025px+ (desktop & large)       */
+/* =============================== */
+@media (min-width: 1025px) {
+  .contact-cta {
+    padding: 25px 40px;
+  }
+}

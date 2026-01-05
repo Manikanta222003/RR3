@@ -1,0 +1,6 @@
+node_modules
+.env
+rr/node_modules
+rr/dist
+RR_properties_backend/node_modules
+RR_properties_backend/.env

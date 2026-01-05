@@ -1,0 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+ 
+}
+
+html {
+  scroll-behavior: smooth;
+}
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Global anchor reset: remove underline and color changes */
+a {
+  color: inherit !important;
+  text-decoration: none !important;
+  -webkit-text-decoration-skip-ink: none;
+  outline: none;
+  box-shadow: none;
+  transition: none !important;
+  cursor: pointer;
+}
+
+a:hover,
+a:active,
+a:focus,
+a:visited {
+  color: inherit !important;
+  text-decoration: none !important;
+  outline: none;
+  box-shadow: none;
+}

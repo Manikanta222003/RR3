@@ -1,0 +1,198 @@
+.story-section {
+  padding: 80px 40px;
+  background: #f7f6fb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.story-wrapper {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  gap: 48px;
+  align-items: stretch;
+}
+
+/* LEFT SIDE */
+
+.story-left {
+  flex: 1.1;
+}
+
+.story-heading {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #050b25;
+}
+
+.story-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4b4f6a;
+  margin-bottom: 16px;
+}
+
+.story-btn {
+  margin-top: 14px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 1.5px solid #7153ff;
+  background: transparent;
+  color: #171a39;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+}
+
+.story-btn:hover {
+  background: #7153ff;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(113, 83, 255, 0.35);
+}
+
+/* RIGHT SIDE – CARD */
+
+.story-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.founder-card {
+  width: 100%;
+  padding: 32px 32px 28px;
+  border-radius: 28px;
+  background: radial-gradient(
+      circle at top left,
+      rgba(254, 249, 195, 0.35),
+      transparent 55%
+    ),
+    #ffffff;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+}
+
+.founder-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.founder-icon-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #050b25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.founder-icon {
+  font-size: 34px;
+  color: #f97316;
+}
+
+.founder-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #050b25;
+}
+
+.founder-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #4b4f6a;
+  text-align: center;
+}
+
+/* ===================================================== */
+/* 0 - 600px (mobile)                                    */
+/* ===================================================== */
+@media (max-width: 600px) {
+  .story-section {
+    padding: 10px 20px;
+  }
+
+  .story-wrapper {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .story-heading {
+    font-size: 24px;
+  }
+
+  .story-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .founder-card {
+    padding: 24px 20px;
+  }
+}
+
+/* ===================================================== */
+/* 601 - 900px (small tablets)                           */
+/* ===================================================== */
+@media (min-width: 601px) and (max-width: 900px) {
+  .story-section {
+    padding: 15px 32px;
+  }
+
+  .story-wrapper {
+    flex-direction: row;
+    max-width: 720px;
+  }
+
+  .story-right {
+    justify-content: center;
+  }
+
+  .founder-card {
+    max-width: 420px;
+  }
+}
+
+/* ===================================================== */
+/* 901 - 1024px (large tablets / small laptops)          */
+/* ===================================================== */
+@media (min-width: 901px) and (max-width: 1024px) {
+  .story-section {
+    padding: 20px 40px;
+  }
+
+  .story-wrapper {
+    gap: 36px;
+  }
+
+  .founder-card {
+    padding: 28px 26px;
+  }
+}
+
+/* ===================================================== */
+/* 1025 - 1440px (normal desktop)                        */
+/* ===================================================== */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .story-section {
+    padding: 20px 80px;
+  }
+}
+
+/* ===================================================== */
+/* 1441px and up (wide screens)                          */
+/* ===================================================== */
+@media (min-width: 1441px) {
+  .story-section {
+    padding: 20px 0;
+  }
+
+  .story-wrapper {
+    max-width: 1200px;
+  }
+}

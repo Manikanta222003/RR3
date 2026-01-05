@@ -1,0 +1,181 @@
+.why-section {
+  padding: 80px 40px;
+  font-family: system-ui, sans-serif;
+  background: #ffffff;
+}
+
+/* ========================= */
+/* GRID LAYOUT */
+/* ========================= */
+.why-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 70px;
+  row-gap: 24px;
+}
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+.why-header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.why-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #000000;
+}
+
+.why-subtext {
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ========================= */
+/* IMAGE */
+/* ========================= */
+.why-image {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.why-image img {
+  width: 100%;
+  height: 450px;
+  border-radius: 24px;
+  object-fit: cover;
+}
+
+/* ========================= */
+/* BULLET POINT CONTENT */
+/* ========================= */
+.why-points {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 20px;
+}
+
+.why-points ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.why-points ul li {
+  position: relative;
+  padding-left: 26px;
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+/* Custom bullet */
+.why-points ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 22px;
+  color: #2563eb;
+}
+
+.why-tagline {
+  margin-top: 22px;
+  font-size: 27px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ========================= */
+/* 📱 MOBILE (0–600px) */
+/* ========================= */
+@media (max-width: 600px) {
+  .why-section {
+    padding: 60px 20px;
+  }
+
+  .why-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .why-header {
+    order: 1;
+    text-align: center;
+  }
+
+  .why-title {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .why-subtext {
+    font-size: 13px;
+    max-width: 92%;
+    margin: 0 auto;
+  }
+
+  .why-image {
+    order: 2;
+  }
+
+  .why-image img {
+    height: 300px;
+    border-radius: 18px;
+  }
+
+  .why-points {
+    order: 3;
+  }
+}
+
+/* ========================= */
+/* 📱 TABLET (601–900px) */
+/* ========================= */
+@media (min-width: 601px) and (max-width: 900px) {
+  .why-section {
+    padding: 70px 40px;
+  }
+
+  .why-wrapper {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    column-gap: 40px;
+    row-gap: 24px;
+  }
+
+  .why-header {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .why-points {
+    grid-column: 2;
+  }
+
+  .why-image {
+    grid-column: 1;
+  }
+
+  .why-title {
+    font-size: 26px;
+  }
+}
+
+/* ========================= */
+/* DESKTOP REFINEMENTS */
+/* ========================= */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .why-title {
+    font-size: 28px;
+  }
+}

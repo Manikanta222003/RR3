@@ -1,0 +1,145 @@
+/* ================= NAVBAR ================= */
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 16px 40px;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+}
+
+/* LOGO */
+.nav-logo img {
+  width: 210px;
+}
+
+/* ================= DESKTOP MENU ================= */
+
+.nav-menu {
+  background: #e9e8f2;
+  padding: 14px 60px;
+  border-radius: 40px;
+  display: flex;
+  gap: 40px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #000;
+  font-family: "Poppins";
+  font-size: 18px;
+  font-weight: 400;
+  transition: 0.25s;
+}
+
+.nav-menu a:hover {
+  color: #0077ff;
+}
+
+/* ================= HAMBURGER ================= */
+
+.nav-toggle {
+  display: none;
+  width: 40px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 4px;
+}
+
+.nav-toggle span {
+  height: 3px;
+  background: #111827;
+  border-radius: 999px;
+  transition: 0.3s;
+}
+
+/* Hamburger → X */
+.nav-toggle.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ================= MOBILE MENU ================= */
+
+.nav-menu-mobile {
+  position: absolute;
+  top: 70px;
+  left: 16px;
+  right: 16px;
+  background: rgb(233 232 242 / 90%);
+  border-radius: 24px;
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  gap: 18px;
+  animation: slideDown 0.25s ease;
+}
+
+.nav-menu-mobile a {
+  text-decoration: none;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.nav-menu-mobile.show {
+  display: flex;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .nav-menu {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-logo img {
+    width: 95px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo img {
+    width: 85px;
+  }
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
