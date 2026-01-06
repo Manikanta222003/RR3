@@ -9,7 +9,7 @@ function AdminLayout({ children }) {
 
   // 🔐 Admin auth check (COMMON for all admin pages)
   useEffect(() => {
-    fetch("http://localhost:5000/admin/check-auth", {
+    fetch("http://https://rr3-1-wo2n.onrender.com/admin/check-auth", {
       credentials: "include",
     }).then((res) => {
       if (res.status === 401) {
