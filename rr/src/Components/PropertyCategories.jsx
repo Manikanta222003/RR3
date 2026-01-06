@@ -57,7 +57,7 @@ function PropertyCategories() {
 
   /* 🔄 LOAD HOME PAGE PROPERTIES (BACKEND) */
   useEffect(() => {
-    fetch("http://localhost:5000/property/home")
+    fetch("https://rr3-1-wo2n.onrender.com/property/home")
       .then((res) => res.json())
       .then((data) => {
         if (!Array.isArray(data) || data.length === 0) return;
