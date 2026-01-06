@@ -26,13 +26,14 @@ connectDB();
 app.use(
   cors({
     origin: [
-      // "http://localhost:5173",      // local dev
-      // "http://127.0.0.1:5173",      // fallback
-      "https://rr3-1-wo2n.onrender.com"  production later
+      // "http://localhost:5173", // local dev
+      // "http://127.0.0.1:5173", // fallback
+      "https://rr-3.vercel.app", // production
     ],
     credentials: true,
   })
 );
+
 
 app.use(express.json());
 app.use(cookieParser());
