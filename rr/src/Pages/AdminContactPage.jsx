@@ -8,7 +8,7 @@ function AdminContactPage() {
   // 🔹 LOAD CONTACT MESSAGES
   const loadContacts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/contact", {
+      const res = await fetch(" https://rr3-1-wo2n.onrender.com/contact", {
         credentials: "include", // admin auth cookie
       });
       const data = await res.json();
