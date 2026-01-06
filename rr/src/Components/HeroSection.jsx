@@ -19,7 +19,7 @@ function HeroSection() {
 
   // 🔄 LOAD BACKEND BANNERS IN BACKGROUND
   useEffect(() => {
-    fetch("http://localhost:5000/banner")
+    fetch("https://rr3-1-wo2n.onrender.com/banner")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
