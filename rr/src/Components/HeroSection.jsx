@@ -15,7 +15,6 @@ const DEFAULT_SLIDE = {
 };
 
 function HeroSection() {
-  /* ✅ Start with default slide (no blank UI) */
   const [slides, setSlides] = useState([DEFAULT_SLIDE]);
   const [current, setCurrent] = useState(0);
 
@@ -33,18 +32,18 @@ function HeroSection() {
         if (banners.length > 0) {
           const backendSlides = banners.map((item) => ({
             id: item._id,
-            image: item.imageUrl,
+            image: item.imageUrl?.startsWith("http")
+              ? item.imageUrl
+              : `${API_BASE}${item.imageUrl}`, // ✅ FIX
             titleLine1: DEFAULT_SLIDE.titleLine1,
             description: DEFAULT_SLIDE.description,
             ctaText: DEFAULT_SLIDE.ctaText,
           }));
 
-          // ✅ Merge default + backend (no flicker)
           setSlides([DEFAULT_SLIDE, ...backendSlides]);
         }
       } catch (err) {
         console.error("Failed to load banners", err);
-        // fallback: keep default slide
       }
     };
 
@@ -66,7 +65,6 @@ function HeroSection() {
 
   return (
     <section className="hero">
-      {/* Background image */}
       <img
         src={activeSlide.image}
         alt="Hero Banner"
@@ -83,15 +81,12 @@ function HeroSection() {
         </a>
       </div>
 
-      {/* Dots */}
       {slides.length > 1 && (
         <div className="hero-dots">
           {slides.map((slide, index) => (
             <button
               key={slide.id}
-              className={`hero-dot ${
-                index === current ? "active" : ""
-              }`}
+              className={`hero-dot ${index === current ? "active" : ""}`}
               onClick={() => setCurrent(index)}
               aria-label={`Go to slide ${index + 1}`}
             />
