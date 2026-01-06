@@ -27,7 +27,7 @@ const AdminLogin = () => {
 
       console.log("LOGIN PAYLOAD:", payload); // DEBUG
 
-      const res = await fetch("http://localhost:5000/admin/login", {
+      const res = await fetch(" https://rr3-1-wo2n.onrender.com/admin/login", {
         method: "POST",
         credentials: "include",
         headers: {
