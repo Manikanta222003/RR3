@@ -5,6 +5,8 @@ import "../styles/AdminLogin.css";
 import sidebarLogo from "../assets/Images/rr-logo.png";
 import adminLogo from "../assets/Images/rr-logo.png";
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com";
+
 const AdminVerifyOtp = () => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,8 +17,9 @@ const AdminVerifyOtp = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://rr3-1-wo2n.onrender.com/admin/verify-otp", {
+      const res = await fetch(`${API_BASE}/admin/verify-otp`, {
         method: "POST",
+        credentials: "include", // 🔐 IMPORTANT
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ otp }),
       });
@@ -24,10 +27,11 @@ const AdminVerifyOtp = () => {
       const data = await res.json();
       alert(data.message);
 
-      if (data.message === "OTP verified") {
+      if (res.ok && data.message === "OTP verified") {
         navigate("/admin/reset-password");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Server error");
     } finally {
       setLoading(false);
@@ -38,7 +42,7 @@ const AdminVerifyOtp = () => {
     <div className="admin-login-page">
       <aside className="admin-left">
         <div className="brand">
-          <img src={sidebarLogo} className="brand-logo" />
+          <img src={sidebarLogo} className="brand-logo" alt="RR Properties" />
           <h2>RR Properties</h2>
         </div>
       </aside>
@@ -47,7 +51,7 @@ const AdminVerifyOtp = () => {
         <div className="login-card">
           <div className="login-form full">
             <div className="form-header">
-              <img src={adminLogo} className="admin-logo" />
+              <img src={adminLogo} className="admin-logo" alt="Admin" />
               <h1>Verify OTP</h1>
             </div>
 
