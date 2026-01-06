@@ -64,18 +64,43 @@ function Properties_page() {
   const [backendProperties, setBackendProperties] = useState([]);
   const [currentBanner, setCurrentBanner] = useState(0);
 
+  /* 🔹 LOAD BACKEND PROPERTIES */
+  useEffect(() => {
+    const loadProperties = async () => {
+      try {
+        const res = await fetch(
+          "https://rr3-1-wo2n.onrender.com/property",
+          { credentials: "include" } // safe even for public
+        );
+
+        const data = await res.json();
+
+        // ✅ Handle both response styles
+        const properties = Array.isArray(data)
+          ? data
+          : data.properties || [];
+
+        setBackendProperties(properties);
+      } catch (err) {
+        console.error("Failed to load properties", err);
+      }
+    };
+
+    loadProperties();
+  }, []);
+
   /* 🔹 MERGED PROPERTIES */
   const allProperties = [...STATIC_PROPERTIES, ...backendProperties];
 
-  /* 🔹 DYNAMIC FILTER OPTIONS (STATIC + BACKEND) */
+  /* 🔹 FILTER OPTIONS */
   const filterOptions = {
-    cities: [...new Set(allProperties.map((p) => p.city).filter(Boolean))],
-    localities: [...new Set(allProperties.map((p) => p.locality).filter(Boolean))],
-    typologies: [...new Set(allProperties.map((p) => p.typology).filter(Boolean))],
-    statuses: [...new Set(allProperties.map((p) => p.status).filter(Boolean))],
+    cities: [...new Set(allProperties.map(p => p.city).filter(Boolean))],
+    localities: [...new Set(allProperties.map(p => p.locality).filter(Boolean))],
+    typologies: [...new Set(allProperties.map(p => p.typology).filter(Boolean))],
+    statuses: [...new Set(allProperties.map(p => p.status).filter(Boolean))],
   };
 
-  /* 🔹 FILTER STATES */
+  /* 🔹 FILTER STATE */
   const [tempSearch, setTempSearch] = useState("");
   const [tempCity, setTempCity] = useState("");
   const [tempLocality, setTempLocality] = useState("");
@@ -90,39 +115,6 @@ function Properties_page() {
     status: "",
   });
 
-  /* 🔄 LOAD BACKEND PROPERTIES */
-  useEffect(() => {
-    fetch("https://rr3-1-wo2n.onrender.com/property")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setBackendProperties(data);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  /* 🔹 BANNER IMAGES (STATIC + BACKEND) */
-  const bannerImages = [
-    ...new Set(
-      allProperties
-        .map((p) => p.images?.[0]?.url)
-        .filter(Boolean)
-    ),
-  ];
-
-  /* 🔁 AUTO SLIDE */
-  useEffect(() => {
-    if (bannerImages.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentBanner((prev) =>
-        prev === bannerImages.length - 1 ? 0 : prev + 1
-      );
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [bannerImages]);
-
-  /* APPLY FILTERS */
   const applyFilters = () => {
     setFilters({
       search: tempSearch,
@@ -148,24 +140,43 @@ function Properties_page() {
     });
   };
 
-  /* 🔹 FILTER LOGIC (STATIC + BACKEND) */
-  const filteredProperties = allProperties.filter((p) => {
-    return (
-      (filters.search === "" ||
-        p.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-        p.location.toLowerCase().includes(filters.search.toLowerCase())) &&
-      (filters.city === "" || p.city === filters.city) &&
-      (filters.locality === "" || p.locality === filters.locality) &&
-      (filters.typology === "" || p.typology === filters.typology) &&
-      (filters.status === "" || p.status === filters.status)
-    );
-  });
+  /* 🔹 FILTERED PROPERTIES */
+  const filteredProperties = allProperties.filter((p) =>
+    (filters.search === "" ||
+      p.title.toLowerCase().includes(filters.search.toLowerCase()) ||
+      p.location.toLowerCase().includes(filters.search.toLowerCase())) &&
+    (filters.city === "" || p.city === filters.city) &&
+    (filters.locality === "" || p.locality === filters.locality) &&
+    (filters.typology === "" || p.typology === filters.typology) &&
+    (filters.status === "" || p.status === filters.status)
+  );
+
+  /* 🔹 BANNER IMAGES */
+  const bannerImages = [
+    ...new Set(
+      allProperties
+        .map(p => p.images?.[0]?.url)
+        .filter(Boolean)
+    ),
+  ];
+
+  useEffect(() => {
+    if (bannerImages.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentBanner(prev =>
+        prev === bannerImages.length - 1 ? 0 : prev + 1
+      );
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [bannerImages]);
 
   return (
     <section className="property-section">
       {/* 🔥 BANNER */}
       <div className="property-banner">
-        <img src={bannerImages[currentBanner]} alt="Banner" />
+        {bannerImages.length > 0 && (
+          <img src={bannerImages[currentBanner]} alt="Banner" />
+        )}
       </div>
 
       {/* 🔍 FILTER BAR */}
@@ -185,30 +196,21 @@ function Properties_page() {
           ))}
         </select>
 
-        <select
-          value={tempLocality}
-          onChange={(e) => setTempLocality(e.target.value)}
-        >
+        <select value={tempLocality} onChange={(e) => setTempLocality(e.target.value)}>
           <option value="">Locality</option>
           {filterOptions.localities.map((l) => (
             <option key={l}>{l}</option>
           ))}
         </select>
 
-        <select
-          value={tempTypology}
-          onChange={(e) => setTempTypology(e.target.value)}
-        >
+        <select value={tempTypology} onChange={(e) => setTempTypology(e.target.value)}>
           <option value="">Typology</option>
           {filterOptions.typologies.map((t) => (
             <option key={t}>{t}</option>
           ))}
         </select>
 
-        <select
-          value={tempStatus}
-          onChange={(e) => setTempStatus(e.target.value)}
-        >
+        <select value={tempStatus} onChange={(e) => setTempStatus(e.target.value)}>
           <option value="">Status</option>
           {filterOptions.statuses.map((s) => (
             <option key={s}>{s}</option>
@@ -224,7 +226,10 @@ function Properties_page() {
         {filteredProperties.map((item) => (
           <div className="property-card" key={item._id}>
             <div className="property-image">
-              <img src={item.images[0].url} alt={item.title} />
+              <img
+                src={item.images?.[0]?.url}
+                alt={item.title}
+              />
               <span className="new-launch-badge">{item.status}</span>
               <div className="property-logo">
                 <img src={logo} alt="Logo" />
