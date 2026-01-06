@@ -92,7 +92,7 @@ function Properties_page() {
 
   /* 🔄 LOAD BACKEND PROPERTIES */
   useEffect(() => {
-    fetch("http://localhost:5000/property")
+    fetch("https://rr3-1-wo2n.onrender.com/property")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
