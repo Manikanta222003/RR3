@@ -5,6 +5,8 @@ import "../styles/AdminLogin.css";
 import sidebarLogo from "../assets/Images/rr-logo.png";
 import adminLogo from "../assets/Images/rr-logo.png";
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com";
+
 const AdminForgotPassword = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -14,18 +16,20 @@ const AdminForgotPassword = () => {
     setLoading(true);
 
     try {
-      const res = await fetch( "https://rr3-1-wo2n.onrender.com/admin/forgot-password", {
+      const res = await fetch(`${API_BASE}/admin/forgot-password`, {
         method: "POST",
+        credentials: "include", // 🔐 IMPORTANT
         headers: { "Content-Type": "application/json" },
       });
 
       const data = await res.json();
       alert(data.message);
 
-      if (data.message.includes("OTP")) {
+      if (res.ok && data.message.toLowerCase().includes("otp")) {
         navigate("/admin/verify-otp");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Server error");
     } finally {
       setLoading(false);
@@ -36,7 +40,7 @@ const AdminForgotPassword = () => {
     <div className="admin-login-page">
       <aside className="admin-left">
         <div className="brand">
-          <img src={sidebarLogo} className="brand-logo" />
+          <img src={sidebarLogo} className="brand-logo" alt="RR Properties" />
           <h2>RR Properties</h2>
         </div>
       </aside>
@@ -45,7 +49,7 @@ const AdminForgotPassword = () => {
         <div className="login-card">
           <div className="login-form full">
             <div className="form-header">
-              <img src={adminLogo} className="admin-logo" />
+              <img src={adminLogo} className="admin-logo" alt="Admin" />
               <h1>Forgot Password</h1>
               <p>OTP will be sent to registered admin email</p>
             </div>
