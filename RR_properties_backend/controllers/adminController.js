@@ -75,11 +75,12 @@ export const loginAdmin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false,
-    });
+   res.cookie("adminToken", token, {
+  httpOnly: true,
+  sameSite: "none",   // REQUIRED for Vercel → Render
+  secure: true,       // REQUIRED for HTTPS
+});
+
 
     // ✅ ALWAYS RETURN JSON
     return res.status(200).json({
