@@ -9,7 +9,7 @@ function AdminFaq() {
 
   // Load FAQs
   const loadFaqs = async () => {
-    const res = await fetch("http://localhost:5000/faq");
+    const res = await fetch(" https://rr3-1-wo2n.onrender.com/faq");
     const data = await res.json();
     setFaqs(data);
   };
