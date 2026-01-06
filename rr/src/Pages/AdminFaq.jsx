@@ -9,7 +9,10 @@ function AdminFaq() {
 
   // Load FAQs
   const loadFaqs = async () => {
-    const res = await fetch(" https://rr3-1-wo2n.onrender.com/faq");
+    const res = await fetch(
+    "https://rr3-1-wo2n.onrender.com/faq",
+    { credentials: "include" }
+  );
     const data = await res.json();
     setFaqs(data);
   };
@@ -27,14 +30,17 @@ function AdminFaq() {
 
     setLoading(true);
 
-    const res = await fetch("http://localhost:5000/faq/add", {
+    const res = await fetch(
+    "https://rr3-1-wo2n.onrender.com/faq/add",
+    {
       method: "POST",
-      credentials: "include", // 🔐 admin auth
+      credentials: "include", // 🔐 REQUIRED
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ question, answer }),
-    });
+    }
+  );
 
     const data = await res.json();
 
@@ -54,13 +60,13 @@ function AdminFaq() {
   const deleteFaq = async (id) => {
     if (!window.confirm("Delete this FAQ?")) return;
 
-    const res = await fetch(
-      `http://localhost:5000/faq/delete/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-    );
+     const res = await fetch(
+    `https://rr3-1-wo2n.onrender.com/faq/delete/${id}`,
+    {
+      method: "DELETE",
+      credentials: "include", // 🔐 REQUIRED
+    }
+  );
 
     const data = await res.json();
     alert(data.message);
