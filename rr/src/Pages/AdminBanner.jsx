@@ -119,23 +119,31 @@ function AdminBanner() {
       </div>
 
       {/* BANNER GRID */}
-      <div className="banner-grid">
-        {banners.length === 0 ? (
-          <p>No banners uploaded yet</p>
-        ) : (
-          banners.map((b) => (
-            <div className="banner-card" key={b._id}>
-              <img src={b.imageUrl} alt="banner" />
-              <button
-                className="delete-btn"
-                onClick={() => deleteBanner(b._id)}
-              >
-                Delete
-              </button>
-            </div>
-          ))
-        )}
+<div className="banner-grid">
+  {banners.length === 0 ? (
+    <p>No banners uploaded yet</p>
+  ) : (
+    banners.map((b) => (
+      <div className="banner-card" key={b._id}>
+        <img
+          src={
+            b.imageUrl?.startsWith("http")
+              ? b.imageUrl
+              : `${API_BASE}${b.imageUrl}`
+          }
+          alt="banner"
+        />
+        <button
+          className="delete-btn"
+          onClick={() => deleteBanner(b._id)}
+        >
+          Delete
+        </button>
       </div>
+    ))
+  )}
+</div>
+
     </AdminLayout>
   );
 }
