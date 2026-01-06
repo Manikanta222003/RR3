@@ -14,7 +14,7 @@ const AdminForgotPassword = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/admin/forgot-password", {
+      const res = await fetch( https://rr3-1-wo2n.onrender.com/admin/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
