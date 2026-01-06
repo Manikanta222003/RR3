@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import AdminLayout from "../layouts/AdminLayout";
 import "../styles/AdminProperties.css";
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com";
+
 function AdminProperties() {
   const [properties, setProperties] = useState([]);
   const fileInputRef = useRef(null);
@@ -19,7 +21,7 @@ function AdminProperties() {
     unitSize: "",
     price: "",
     showOnHome: false,
-    isNewLaunch: true, // 🔥 NEW
+    isNewLaunch: true,
   });
 
   /* =========================
@@ -34,9 +36,11 @@ function AdminProperties() {
      LOAD PROPERTIES
   ========================= */
   const loadProperties = async () => {
-    const res = await fetch("http://localhost:5000/property");
+    const res = await fetch(`${API_BASE}/property`, {
+      credentials: "include",
+    });
     const data = await res.json();
-    setProperties(Array.isArray(data) ? data : []);
+    setProperties(Array.isArray(data) ? data : data.properties || []);
   };
 
   useEffect(() => {
@@ -82,7 +86,7 @@ function AdminProperties() {
         fd.append("image", img);
 
         const uploadRes = await fetch(
-          "http://localhost:5000/upload/image",
+          `${API_BASE}/upload/image`,
           {
             method: "POST",
             credentials: "include",
@@ -103,7 +107,7 @@ function AdminProperties() {
       }));
 
       /* 3️⃣ Save property */
-      await fetch("https://rr3-1-wo2n.onrender.com/property/add", {
+      const res = await fetch(`${API_BASE}/property/add`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -113,6 +117,8 @@ function AdminProperties() {
           images: formattedImages,
         }),
       });
+
+      if (!res.ok) throw new Error("Property save failed");
 
       alert("Property added successfully");
 
@@ -134,12 +140,11 @@ function AdminProperties() {
       setBannerIndex(null);
       setUseAsBanner(false);
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      if (fileInputRef.current) fileInputRef.current.value = "";
 
       loadProperties();
     } catch (err) {
+      console.error(err);
       alert("Failed to add property");
     } finally {
       setIsSubmitting(false);
@@ -150,18 +155,7 @@ function AdminProperties() {
      TOGGLE HOME VISIBILITY
   ========================= */
   const toggleHome = async (id) => {
-    await fetch(`http://localhost:5000/property/toggle-home/${id}`, {
-      method: "PATCH",
-      credentials: "include",
-    });
-    loadProperties();
-  };
-
-  /* =========================
-     TOGGLE NEW LAUNCH
-  ========================= */
-  const toggleNewLaunch = async (id) => {
-    await fetch(`http://localhost:5000/property/toggle-new-launch/${id}`, {
+    await fetch(`${API_BASE}/property/toggle-home/${id}`, {
       method: "PATCH",
       credentials: "include",
     });
@@ -174,7 +168,7 @@ function AdminProperties() {
   const deleteProperty = async (id) => {
     if (!window.confirm("Delete property permanently?")) return;
 
-    await fetch(`http://localhost:5000/property/delete/${id}`, {
+    await fetch(`${API_BASE}/property/delete/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -188,9 +182,7 @@ function AdminProperties() {
         <h2>Manage Properties</h2>
       </div>
 
-      {/* =========================
-          ADD PROPERTY
-      ========================= */}
+      {/* ADD PROPERTY */}
       <div className="property-form-card">
         <h3>Add Property</h3>
 
@@ -201,9 +193,7 @@ function AdminProperties() {
               <input
                 key={key}
                 name={key}
-                placeholder={
-                  key === "price" ? "Price (e.g. 65 Lakhs)" : key
-                }
+                placeholder={key === "price" ? "Price" : key}
                 value={form[key]}
                 onChange={handleChange}
               />
@@ -227,16 +217,6 @@ function AdminProperties() {
           />{" "}
           Show on Home Page
         </label>
-
-        {/* <label>
-          <input
-            type="checkbox"
-            name="isNewLaunch"
-            checked={form.isNewLaunch}
-            onChange={handleChange}
-          />{" "}
-          Mark as New Launch
-        </label> */}
 
         <label>
           <input
@@ -279,9 +259,7 @@ function AdminProperties() {
         </button>
       </div>
 
-      {/* =========================
-          PROPERTY LIST
-      ========================= */}
+      {/* PROPERTY LIST */}
       <div className="property-grid">
         {properties.map((p) => (
           <div className="property-admin-card" key={p._id}>
@@ -296,13 +274,6 @@ function AdminProperties() {
             >
               {p.showOnHome ? "Remove from Home" : "Add to Home"}
             </button>
-
-            {/* <button
-              className="home-toggle-btn"
-              onClick={() => toggleNewLaunch(p._id)}
-            >
-              {p.isNewLaunch ? "Remove New Launch" : "Mark New Launch"}
-            </button> */}
 
             <button
               className="delete-btn"
