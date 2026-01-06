@@ -103,7 +103,7 @@ function AdminProperties() {
       }));
 
       /* 3️⃣ Save property */
-      await fetch("http://localhost:5000/property/add", {
+      await fetch("https://rr3-1-wo2n.onrender.com/property/add", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
