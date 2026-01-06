@@ -5,6 +5,8 @@ import "../styles/AdminLogin.css";
 import sidebarLogo from "../assets/Images/rr-logo.png";
 import adminLogo from "../assets/Images/rr-logo.png";
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com";
+
 const AdminResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -22,8 +24,9 @@ const AdminResetPassword = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://rr3-1-wo2n.onrender.com/admin/reset-password", {
+      const res = await fetch(`${API_BASE}/admin/reset-password`, {
         method: "POST",
+        credentials: "include", // 🔐 REQUIRED
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ newPassword: password }),
       });
@@ -31,10 +34,11 @@ const AdminResetPassword = () => {
       const data = await res.json();
       alert(data.message);
 
-      if (data.message.includes("updated")) {
+      if (res.ok && data.message.toLowerCase().includes("updated")) {
         navigate("/admin");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Server error");
     } finally {
       setLoading(false);
@@ -45,7 +49,7 @@ const AdminResetPassword = () => {
     <div className="admin-login-page">
       <aside className="admin-left">
         <div className="brand">
-          <img src={sidebarLogo} className="brand-logo" />
+          <img src={sidebarLogo} className="brand-logo" alt="RR Properties" />
           <h2>RR Properties</h2>
         </div>
       </aside>
@@ -54,7 +58,7 @@ const AdminResetPassword = () => {
         <div className="login-card">
           <div className="login-form full">
             <div className="form-header">
-              <img src={adminLogo} className="admin-logo" />
+              <img src={adminLogo} className="admin-logo" alt="Admin" />
               <h1>Reset Password</h1>
             </div>
 
