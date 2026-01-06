@@ -7,7 +7,7 @@ function AdminBanner() {
 
   // Load banners
   const loadBanners = async () => {
-    const res = await fetch("http://localhost:5000/banner");
+    const res = await fetch(" https://rr3-1-wo2n.onrender.com/banner");
     const data = await res.json();
     setBanners(data);
   };
