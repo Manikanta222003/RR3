@@ -20,7 +20,13 @@ export const addProperty = async (req, res) => {
       images = [],
     } = req.body;
 
-    /* 🔒 REMOVE DUPLICATE IMAGES (SAFETY) */
+    if (!title || !location) {
+      return res.status(400).json({
+        message: "Title and location are required",
+      });
+    }
+
+    /* 🔒 REMOVE DUPLICATE IMAGES */
     const uniqueImagesMap = new Map();
     images.forEach((img) => {
       if (img?.url && !uniqueImagesMap.has(img.url)) {
@@ -28,7 +34,7 @@ export const addProperty = async (req, res) => {
       }
     });
 
-    const property = new Property({
+    const property = await Property.create({
       title,
       location,
       city,
@@ -43,14 +49,12 @@ export const addProperty = async (req, res) => {
       images: Array.from(uniqueImagesMap.values()),
     });
 
-    await property.save();
-
     res.status(201).json({
       message: "Property added successfully",
       property,
     });
   } catch (err) {
-    console.error(err);
+    console.error("ADD PROPERTY ERROR:", err);
     res.status(500).json({
       message: "Failed to add property",
     });
@@ -65,6 +69,7 @@ export const getProperties = async (req, res) => {
     const properties = await Property.find().sort({ createdAt: -1 });
     res.json(properties);
   } catch (err) {
+    console.error("GET PROPERTIES ERROR:", err);
     res.status(500).json({
       message: "Failed to load properties",
     });
@@ -76,10 +81,9 @@ export const getProperties = async (req, res) => {
 ========================= */
 export const getHomeProperties = async (req, res) => {
   try {
-    const properties = await Property.find({
-      showOnHome: true,
-    }).sort({ createdAt: -1 });
-
+    const properties = await Property.find({ showOnHome: true }).sort({
+      createdAt: -1,
+    });
     res.json(properties);
   } catch (err) {
     res.status(500).json({
@@ -148,10 +152,7 @@ export const toggleNewLaunch = async (req, res) => {
 export const deleteProperty = async (req, res) => {
   try {
     await Property.findByIdAndDelete(req.params.id);
-
-    res.json({
-      message: "Property deleted permanently",
-    });
+    res.json({ message: "Property deleted permanently" });
   } catch (err) {
     res.status(500).json({
       message: "Failed to delete property",
@@ -183,7 +184,7 @@ export const getPropertyFilters = async (req, res) => {
 };
 
 /* =========================
-   GET BANNER IMAGES
+   GET PROPERTY BANNER IMAGES
 ========================= */
 export const getBannerImages = async (req, res) => {
   try {
@@ -200,7 +201,7 @@ export const getBannerImages = async (req, res) => {
 
     res.json(bannerImages);
   } catch (err) {
-    console.error(err);
+    console.error("GET PROPERTY BANNERS ERROR:", err);
     res.status(500).json({
       message: "Failed to load property banners",
     });
