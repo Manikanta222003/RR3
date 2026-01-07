@@ -33,14 +33,16 @@ function AdminProperties() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   /* =========================
-     LOAD PROPERTIES
+     LOAD PROPERTIES (PUBLIC)
   ========================= */
   const loadProperties = async () => {
-    const res = await fetch(`${API_BASE}/property`, {
-      credentials: "include",
-    });
-    const data = await res.json();
-    setProperties(Array.isArray(data) ? data : data.properties || []);
+    try {
+      const res = await fetch(`${API_BASE}/property`);
+      const data = await res.json();
+      setProperties(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Failed to load properties", err);
+    }
   };
 
   useEffect(() => {
@@ -56,7 +58,7 @@ function AdminProperties() {
   };
 
   /* =========================
-     ADD PROPERTY
+     ADD PROPERTY (ADMIN)
   ========================= */
   const addProperty = async () => {
     if (isSubmitting) return;
@@ -78,29 +80,28 @@ function AdminProperties() {
         return;
       }
 
-      /* 1️⃣ Upload images */
+      /* 1️⃣ Upload images to Cloudinary */
       const uploadedUrls = [];
 
-      for (let img of images) {
+      for (const img of images) {
         const fd = new FormData();
         fd.append("image", img);
 
-        const uploadRes = await fetch(
-          `${API_BASE}/upload/image`,
-          {
-            method: "POST",
-            credentials: "include",
-            body: fd,
-          }
-        );
+        const uploadRes = await fetch(`${API_BASE}/upload/image`, {
+          method: "POST",
+          credentials: "include", // 🔐 admin
+          body: fd,
+        });
 
-        if (!uploadRes.ok) throw new Error("Image upload failed");
+        if (!uploadRes.ok) {
+          throw new Error("Image upload failed");
+        }
 
         const uploadData = await uploadRes.json();
         uploadedUrls.push(uploadData.imageUrl);
       }
 
-      /* 2️⃣ Format images */
+      /* 2️⃣ Prepare images payload */
       const formattedImages = uploadedUrls.map((url, index) => ({
         url,
         isBanner: useAsBanner && index === bannerIndex,
@@ -118,7 +119,9 @@ function AdminProperties() {
         }),
       });
 
-      if (!res.ok) throw new Error("Property save failed");
+      if (!res.ok) {
+        throw new Error("Property save failed");
+      }
 
       alert("Property added successfully");
 
@@ -139,7 +142,6 @@ function AdminProperties() {
       setImages([]);
       setBannerIndex(null);
       setUseAsBanner(false);
-
       if (fileInputRef.current) fileInputRef.current.value = "";
 
       loadProperties();
@@ -263,7 +265,10 @@ function AdminProperties() {
       <div className="property-grid">
         {properties.map((p) => (
           <div className="property-admin-card" key={p._id}>
-            <img src={p.images?.[0]?.url} alt={p.title} />
+            <img
+              src={p.images?.[0]?.url}
+              alt={p.title}
+            />
             <h4>{p.title}</h4>
             <p>{p.location}</p>
             <p><strong>Price:</strong> {p.price}</p>
