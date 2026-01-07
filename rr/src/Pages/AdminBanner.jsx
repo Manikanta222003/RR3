@@ -14,10 +14,10 @@ function AdminBanner() {
   const loadBanners = async () => {
     try {
       const res = await fetch(`${API_BASE}/banner`, {
-        credentials: "include", // safe even if public
+        credentials: "include",
       });
       const data = await res.json();
-      setBanners(Array.isArray(data) ? data : data.banners || []);
+      setBanners(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Failed to load banners", err);
     }
@@ -28,7 +28,7 @@ function AdminBanner() {
   }, []);
 
   /* =========================
-     UPLOAD BANNER
+     UPLOAD BANNER (CLOUDINARY)
   ========================= */
   const uploadBanner = async () => {
     if (!file) {
@@ -40,7 +40,7 @@ function AdminBanner() {
     setUploading(true);
 
     try {
-      /* 1️⃣ Upload image */
+      /* 1️⃣ Upload image to Cloudinary */
       const fd = new FormData();
       fd.append("image", file);
 
@@ -54,7 +54,7 @@ function AdminBanner() {
 
       const uploadData = await uploadRes.json();
 
-      /* 2️⃣ Save banner */
+      /* 2️⃣ Save banner URL in DB */
       const saveRes = await fetch(`${API_BASE}/banner/add`, {
         method: "POST",
         credentials: "include",
@@ -119,31 +119,25 @@ function AdminBanner() {
       </div>
 
       {/* BANNER GRID */}
-<div className="banner-grid">
-  {banners.length === 0 ? (
-    <p>No banners uploaded yet</p>
-  ) : (
-    banners.map((b) => (
-      <div className="banner-card" key={b._id}>
-        <img
-          src={
-            b.imageUrl?.startsWith("http")
-              ? b.imageUrl
-              : `${API_BASE}${b.imageUrl}`
-          }
-          alt="banner"
-        />
-        <button
-          className="delete-btn"
-          onClick={() => deleteBanner(b._id)}
-        >
-          Delete
-        </button>
-      </div>
-    ))
-  )}
-</div>
+      <div className="banner-grid">
+        {banners.length === 0 ? (
+          <p>No banners uploaded yet</p>
+        ) : (
+          banners.map((b) => (
+            <div className="banner-card" key={b._id}>
+              {/* ✅ Cloudinary URL directly */}
+              <img src={b.imageUrl} alt="banner" />
 
+              <button
+                className="delete-btn"
+                onClick={() => deleteBanner(b._id)}
+              >
+                Delete
+              </button>
+            </div>
+          ))
+        )}
+      </div>
     </AdminLayout>
   );
 }
