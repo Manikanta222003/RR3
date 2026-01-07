@@ -60,27 +60,21 @@ const STATIC_PROPERTIES = [
   },
 ];
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com";
+
 function Properties_page() {
   const [backendProperties, setBackendProperties] = useState([]);
   const [currentBanner, setCurrentBanner] = useState(0);
 
-  /* 🔹 LOAD BACKEND PROPERTIES */
+  /* =========================
+     LOAD BACKEND PROPERTIES
+  ========================= */
   useEffect(() => {
     const loadProperties = async () => {
       try {
-        const res = await fetch(
-          "https://rr3-1-wo2n.onrender.com/property",
-          { credentials: "include" } // safe even for public
-        );
-
+        const res = await fetch(`${API_BASE}/property`);
         const data = await res.json();
-
-        // ✅ Handle both response styles
-        const properties = Array.isArray(data)
-          ? data
-          : data.properties || [];
-
-        setBackendProperties(properties);
+        setBackendProperties(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Failed to load properties", err);
       }
@@ -89,10 +83,14 @@ function Properties_page() {
     loadProperties();
   }, []);
 
-  /* 🔹 MERGED PROPERTIES */
+  /* =========================
+     MERGE STATIC + BACKEND
+  ========================= */
   const allProperties = [...STATIC_PROPERTIES, ...backendProperties];
 
-  /* 🔹 FILTER OPTIONS */
+  /* =========================
+     FILTER OPTIONS
+  ========================= */
   const filterOptions = {
     cities: [...new Set(allProperties.map(p => p.city).filter(Boolean))],
     localities: [...new Set(allProperties.map(p => p.locality).filter(Boolean))],
@@ -100,7 +98,9 @@ function Properties_page() {
     statuses: [...new Set(allProperties.map(p => p.status).filter(Boolean))],
   };
 
-  /* 🔹 FILTER STATE */
+  /* =========================
+     FILTER STATE
+  ========================= */
   const [tempSearch, setTempSearch] = useState("");
   const [tempCity, setTempCity] = useState("");
   const [tempLocality, setTempLocality] = useState("");
@@ -140,18 +140,22 @@ function Properties_page() {
     });
   };
 
-  /* 🔹 FILTERED PROPERTIES */
+  /* =========================
+     FILTER LOGIC
+  ========================= */
   const filteredProperties = allProperties.filter((p) =>
     (filters.search === "" ||
-      p.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-      p.location.toLowerCase().includes(filters.search.toLowerCase())) &&
+      p.title?.toLowerCase().includes(filters.search.toLowerCase()) ||
+      p.location?.toLowerCase().includes(filters.search.toLowerCase())) &&
     (filters.city === "" || p.city === filters.city) &&
     (filters.locality === "" || p.locality === filters.locality) &&
     (filters.typology === "" || p.typology === filters.typology) &&
     (filters.status === "" || p.status === filters.status)
   );
 
-  /* 🔹 BANNER IMAGES */
+  /* =========================
+     BANNER IMAGES
+  ========================= */
   const bannerImages = [
     ...new Set(
       allProperties
@@ -162,11 +166,13 @@ function Properties_page() {
 
   useEffect(() => {
     if (bannerImages.length <= 1) return;
+
     const timer = setInterval(() => {
       setCurrentBanner(prev =>
         prev === bannerImages.length - 1 ? 0 : prev + 1
       );
     }, 4000);
+
     return () => clearInterval(timer);
   }, [bannerImages]);
 
@@ -175,7 +181,10 @@ function Properties_page() {
       {/* 🔥 BANNER */}
       <div className="property-banner">
         {bannerImages.length > 0 && (
-          <img src={bannerImages[currentBanner]} alt="Banner" />
+          <img
+            src={bannerImages[currentBanner]}
+            alt="Property Banner"
+          />
         )}
       </div>
 
@@ -191,28 +200,28 @@ function Properties_page() {
 
         <select value={tempCity} onChange={(e) => setTempCity(e.target.value)}>
           <option value="">City</option>
-          {filterOptions.cities.map((c) => (
+          {filterOptions.cities.map(c => (
             <option key={c}>{c}</option>
           ))}
         </select>
 
         <select value={tempLocality} onChange={(e) => setTempLocality(e.target.value)}>
           <option value="">Locality</option>
-          {filterOptions.localities.map((l) => (
+          {filterOptions.localities.map(l => (
             <option key={l}>{l}</option>
           ))}
         </select>
 
         <select value={tempTypology} onChange={(e) => setTempTypology(e.target.value)}>
           <option value="">Typology</option>
-          {filterOptions.typologies.map((t) => (
+          {filterOptions.typologies.map(t => (
             <option key={t}>{t}</option>
           ))}
         </select>
 
         <select value={tempStatus} onChange={(e) => setTempStatus(e.target.value)}>
           <option value="">Status</option>
-          {filterOptions.statuses.map((s) => (
+          {filterOptions.statuses.map(s => (
             <option key={s}>{s}</option>
           ))}
         </select>
@@ -223,7 +232,7 @@ function Properties_page() {
 
       {/* 🏠 PROPERTY CARDS */}
       <div className="property-flex">
-        {filteredProperties.map((item) => (
+        {filteredProperties.map(item => (
           <div className="property-card" key={item._id}>
             <div className="property-image">
               <img
