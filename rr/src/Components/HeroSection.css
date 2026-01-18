@@ -216,7 +216,7 @@
 }
 
 /* Extra small */
-@media (max-width: 320px) {
+@media (max-width: 374px) {
   .hero-content {
     bottom: 36px;
   }
