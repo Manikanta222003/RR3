@@ -3,12 +3,12 @@ import {
   addProperty,
   getProperties,
   getHomeProperties,
-  getBannerImages,
   toggleHomeVisibility,
-  toggleNewLaunch,
   deleteProperty,
   getPropertyFilters,
+  getPropertyBannerImages,
 } from "../controllers/propertyController.js";
+
 import adminAuth from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -19,43 +19,33 @@ const router = express.Router();
 router.post("/add", adminAuth, addProperty);
 
 /* ==============================
-   GET ALL PROPERTIES
-   (Properties page)
+   GET ALL PROPERTIES (PUBLIC)
 ============================== */
 router.get("/", getProperties);
 
 /* ==============================
    GET HOME PAGE PROPERTIES
-   (Featured section)
 ============================== */
 router.get("/home", getHomeProperties);
 
 /* ==============================
-   GET BANNER IMAGES
-   (Hero / banner section)
+   PROPERTY PAGE BANNER SLIDER
 ============================== */
-router.get("/banner", getBannerImages);
+router.get("/banners", getPropertyBannerImages);
+
+/* ==============================
+   FILTER OPTIONS
+============================== */
+router.get("/filters", getPropertyFilters);
 
 /* ==============================
    TOGGLE HOME PAGE VISIBILITY
-   (ADD / REMOVE FROM HOME)
 ============================== */
 router.patch("/toggle-home/:id", adminAuth, toggleHomeVisibility);
 
 /* ==============================
-   TOGGLE NEW LAUNCH BADGE
-============================== */
-router.patch("/toggle-new-launch/:id", adminAuth, toggleNewLaunch);
-
-/* ==============================
-   DELETE PROPERTY (PERMANENT)
-   ⚠️ Use carefully
+   DELETE PROPERTY
 ============================== */
 router.delete("/delete/:id", adminAuth, deleteProperty);
-
-/* ==============================
-   GET FILTER OPTIONS
-============================== */
-router.get("/filters", getPropertyFilters);
 
 export default router;
