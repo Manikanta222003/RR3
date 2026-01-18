@@ -1,130 +1,99 @@
 // src/components/properties/PropertyCategories.jsx
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./PropertyCategories.css";
-
-/* 🔒 STATIC IMAGES */
-import img1 from "../assets/Images/property2.png";
-import img2 from "../assets/Images/property3.png";
-import img3 from "../assets/Images/property4.png";
-import img4 from "../assets/Images/property5.png";
 
 /* LOGO */
 import logo from "../assets/Images/rr-logo.png";
 
-/* 🔒 STATIC PROPERTIES (ALWAYS SHOWN) */
-const STATIC_PROPERTIES = [
-  {
-    _id: "static-home-1",
-    title: "Dr.Y.V.Rao's Enclave 3 BHK Luxury Apartments",
-    location: "Sri Ram Nagar, Kakinada",
-    unitSize: "1911 Sq. Ft. East Facing",
-    price: "Price On Request",
-    status: "New Launch",
-    images: [{ url: img1 }],
-  },
-  {
-    _id: "static-home-2",
-    title: "Signature Suite 3 BHK Luxury Apartments",
-    location: "Mehar Nagar, Kakinada",
-    unitSize: "1551 Sq. Ft. East & West Facings",
-    price: "Price On Request",
-    status: "New Launch",
-    images: [{ url: img2 }],
-  },
-  {
-    _id: "static-home-3",
-    title: "Venkatadhri 3 BHK Luxury Apartments",
-    location: "Near New DMART, Turangi",
-    unitSize: "1405 Sq. Ft. North & South Facings",
-    price: "Price On Request",
-    status: "New Launch",
-    images: [{ url: img3 }],
-  },
-  {
-    _id: "static-home-4",
-    title: "Surya's Velvet Vista 3 BHK Luxury Apartments",
-    location: "Venkatanagar, Kakinada",
-    unitSize: "1725 Sq. Ft. North Facing",
-    price: "Price On Request",
-    status: "New Launch",
-    images: [{ url: img4 }],
-  },
-];
+/* ✅ BACKEND */
+const API_BASE = "https://rr3-1-wo2n.onrender.com";
 
 function PropertyCategories() {
-  /* ✅ INSTANT LOAD */
-  const [properties, setProperties] = useState(STATIC_PROPERTIES);
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  /* 🔄 LOAD HOME PAGE PROPERTIES (BACKEND) */
+  /* 🔄 LOAD HOME PAGE PROPERTIES (BACKEND ONLY) */
   useEffect(() => {
-    fetch("https://rr3-1-wo2n.onrender.com/property/home")
-      .then((res) => res.json())
-      .then((data) => {
-        if (!Array.isArray(data) || data.length === 0) return;
+    const loadHomeProperties = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/property/home`);
+        const data = await res.json();
 
-        setProperties((prev) => {
-          const existingIds = new Set(prev.map((p) => p._id));
+        setProperties(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load home properties", err);
+        setProperties([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-          const safeBackend = data
-            .filter((p) => !existingIds.has(p._id)) // ✅ prevent duplicates
-            .map((p) => ({
-              ...p,
-              status: p.status || "New Launch",
-              unitSize: p.unitSize || "Details on Request",
-              price: p.price || "Price On Request",
-              images:
-                p.images && p.images.length > 0
-                  ? p.images
-                  : [{ url: img1 }], // fallback image
-            }));
-
-          return [...prev, ...safeBackend];
-        });
-      })
-      .catch(() => {
-        // backend down → static only (silent fail)
-      });
+    loadHomeProperties();
   }, []);
 
   return (
     <section className="property-section" id="services">
       <h2 className="property-heading">Explore Property Categories</h2>
 
-      <div className="property-flex">
-        {properties.map((item) => (
-          <div className="property-card" key={item._id}>
-            <div className="property-image">
-              <img src={item.images[0].url} alt={item.title} />
-              <span className="new-launch-badge">
-                {item.status}
-              </span>
+      {loading ? (
+        <p style={{ textAlign: "center" }}>Loading properties...</p>
+      ) : properties.length === 0 ? (
+        <p style={{ textAlign: "center" }}>
+          No properties available right now.
+        </p>
+      ) : (
+        <div className="property-flex">
+          {properties.map((item) => (
+            <div className="property-card" key={item._id}>
+              <div className="property-image">
+                <img
+                  src={
+                    item.images?.find((i) => i.isMain)?.url ||
+                    item.images?.[0]?.url
+                  }
+                  alt={item.title}
+                />
 
-              <div className="property-logo">
-                <img src={logo} alt="Project Logo" />
+                {/* ✅ STATUS BADGE */}
+                {item.constructionStatus && (
+                  <span className="new-launch-badge">
+                    {item.constructionStatus}
+                  </span>
+                )}
+
+                <div className="property-logo">
+                  <img src={logo} alt="Project Logo" />
+                </div>
+              </div>
+
+              <div className="property-content">
+                <h3>{item.title}</h3>
+                <p className="property-location">📍 {item.location}</p>
+
+                {/* ✅ FLAT TYPE */}
+                {item.flatType && (
+                  <p>
+                    <strong>Flat Type:</strong> {item.flatType}
+                  </p>
+                )}
+
+                <p>
+                  <strong>Unit Size:</strong> {item.unitSize || "N/A"}
+                </p>
+
+                <p className="property-price">
+                  <strong>Price:</strong> {item.price || "N/A"}
+                </p>
+
+                <Link to="/contacts">
+                  <button className="property-btn">Contact Us</button>
+                </Link>
               </div>
             </div>
-
-            <div className="property-content">
-              <h3>{item.title}</h3>
-              <p className="property-location">📍 {item.location}</p>
-
-              <p>
-                <strong>Unit Size:</strong> {item.unitSize}
-              </p>
-
-              <p className="property-price">
-                <strong>Price:</strong> {item.price}
-              </p>
-
-              <a href="/contacts">
-                <button className="property-btn">
-                  Contact Us
-                </button>
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
