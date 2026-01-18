@@ -2,19 +2,31 @@ import { useEffect, useState } from "react";
 import AdminLayout from "../layouts/AdminLayout";
 import "../styles/AdminContacts.css";
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com"; // ✅ Render backend
+
 function AdminContactPage() {
   const [contacts, setContacts] = useState([]);
 
-  // 🔹 LOAD CONTACT MESSAGES
+  /* =========================
+     LOAD CONTACT MESSAGES
+  ========================= */
   const loadContacts = async () => {
     try {
-      const res = await fetch("https://rr3-1-wo2n.onrender.com/contact", {
-        credentials: "include", // admin auth cookie
+      const res = await fetch(`${API_BASE}/contact`, {
+        credentials: "include",
       });
+
       const data = await res.json();
-      setContacts(data);
+
+      if (!res.ok) {
+        alert(data?.message || "Failed to load contact messages");
+        return;
+      }
+
+      setContacts(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error("Failed to load contact messages");
+      console.error("Failed to load contact messages:", err);
+      alert("❌ Failed to load contact messages");
     }
   };
 
@@ -22,18 +34,30 @@ function AdminContactPage() {
     loadContacts();
   }, []);
 
-  // 🔹 DELETE MESSAGE
+  /* =========================
+     DELETE MESSAGE
+  ========================= */
   const deleteContact = async (id) => {
     if (!window.confirm("Delete this message?")) return;
 
     try {
-      await fetch(`http://localhost:5000/contact/delete/${id}`, {
+      const res = await fetch(`${API_BASE}/contact/delete/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data?.message || "Failed to delete message");
+        return;
+      }
+
+      alert("✅ Message deleted successfully");
       loadContacts();
     } catch (err) {
-      alert("Failed to delete message");
+      console.error("Delete contact error:", err);
+      alert("❌ Failed to delete message");
     }
   };
 
@@ -52,15 +76,19 @@ function AdminContactPage() {
               <p>
                 <strong>Name:</strong> {c.firstName} {c.lastName}
               </p>
+
               <p>
                 <strong>Email:</strong> {c.email}
               </p>
+
               <p>
                 <strong>Phone:</strong> {c.phone}
               </p>
+
               <p>
                 <strong>Message:</strong> {c.message}
               </p>
+
               <p className="contact-date">
                 {new Date(c.createdAt).toLocaleString()}
               </p>
@@ -78,4 +106,5 @@ function AdminContactPage() {
     </AdminLayout>
   );
 }
+
 export default AdminContactPage;
