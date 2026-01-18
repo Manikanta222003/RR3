@@ -15,7 +15,7 @@ const DEFAULT_SLIDE = {
   ctaText: "Apply",
 };
 
-const FACING_OPTIONS = ["North", "East", "South", "West"];
+// const FACING_OPTIONS = ["North", "East", "South", "West"];
 const TYPOLOGY_OPTIONS = ["2BHK", "3BHK", "4BHK"];
 const STATUS_OPTIONS = ["Ready to Move", "Under Construction"];
 
