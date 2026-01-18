@@ -157,7 +157,7 @@ function HeroSection() {
             ))}
           </select>
 
-          <div className="hero-facing">
+          {/* <div className="hero-facing">
             {FACING_OPTIONS.map((f) => (
               <label key={f}>
                 <input
@@ -168,7 +168,7 @@ function HeroSection() {
                 {f}
               </label>
             ))}
-          </div>
+          </div> */}
 
           <button className="hero-btn" onClick={applyFilters}>
             Apply
