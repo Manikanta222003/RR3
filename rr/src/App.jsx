@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import './App.css';
 
-
+import ContactPopup from "./Components/ContactPopup.jsx";
 import HeroSection from './Components/HeroSection.jsx';
 import AboutSection from './Components/AboutSection.jsx';
 import StorySection from './Components/StorySection.jsx';
