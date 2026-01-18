@@ -46,6 +46,23 @@ function HomePage() {
     </>
   );
 }
+function PopupController({ setContactOpen }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    // ❌ DO NOT show popup on admin routes
+    if (location.pathname.startsWith("/admin")) return;
+
+    // ✅ show popup on website pages AFTER refresh
+    const timer = setTimeout(() => {
+      setContactOpen(true);
+    }, 2000); // 6 seconds
+
+    return () => clearTimeout(timer);
+  }, [location.pathname, setContactOpen]);
+
+  return null;
+}
 
 
 
@@ -53,7 +70,18 @@ function HomePage() {
 
 function App() {
   return (
+    const [contactOpen, setContactOpen] = useState(false);
+
+  return (
     <BrowserRouter>
+      {/* 🔹 Controls WHEN popup opens */}
+      <PopupController setContactOpen={setContactOpen} />
+
+      {/* 🔹 GLOBAL CONTACT POPUP */}
+      <ContactPopup
+        isOpen={contactOpen}
+        onClose={() => setContactOpen(false)}
+      />
       <Routes>
 
         {/* WEBSITE HOME PAGE */}
