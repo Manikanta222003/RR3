@@ -40,16 +40,75 @@
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 18px;
-  color:black;
+  color: black;
 }
 
 .hero-content p {
   font-size: 16px;
-  color: #e5e7eb;
-  margin-bottom: 28px;
-  color:black;
+  margin-bottom: 18px;
+  color: black;
 }
 
+/* ===============================
+   ✅ HERO FILTER BAR (NORMAL STYLE)
+=============================== */
+.hero-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+/* input + select */
+.hero-filter-bar input,
+.hero-filter-bar select {
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  min-width: 160px;
+  background: #ffffff;
+  outline: none;
+}
+
+.hero-filter-bar input:focus,
+.hero-filter-bar select:focus {
+  border-color: #0077ff;
+}
+
+/* ===============================
+   ✅ Facing checkbox (gap fixed)
+=============================== */
+.hero-facing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ✅ FIX GAP BETWEEN checkbox and word */
+.hero-facing label {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 3px;
+  font-size: 14px;
+  color: #111827;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.hero-facing input[type="checkbox"] {
+  margin: 0;
+  padding: 0;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+}
+
+/* button */
 .hero-btn {
   padding: 14px 34px;
   border-radius: 10px;
@@ -105,6 +164,11 @@
   .hero-content h1 {
     font-size: 40px;
   }
+
+  .hero-filter-bar input,
+  .hero-filter-bar select {
+    min-width: 140px;
+  }
 }
 
 /* Mobile */
@@ -112,7 +176,7 @@
   .hero {
     height: 90vh;
   }
-  
+
   .hero-overlay {
     background: linear-gradient(
       180deg,
@@ -122,15 +186,14 @@
     );
   }
 
- .hero-content {
-        top: auto;
-        bottom: 120px;
-        left: 50%;
-        width: 525px;
-        transform: translateX(-50%);
-        text-align: center;
-        /* max-width: 130%; */
-    }
+  .hero-content {
+    top: auto;
+    bottom: 120px;
+    left: 50%;
+    width: 90%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
 
   .hero-content h1 {
     font-size: 30px;
@@ -140,9 +203,28 @@
     font-size: 14px;
   }
 
+  /* ✅ Mobile filters stack */
+  .hero-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .hero-filter-bar input,
+  .hero-filter-bar select {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .hero-facing {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
   .hero-btn {
     width: 100%;
     max-width: 260px;
+    margin: 0 auto;
   }
 
   .hero-dots {
@@ -150,37 +232,22 @@
   }
 }
 
+/* 375px to 766px */
 @media (min-width: 375px) and (max-width: 766px) {
   .hero-content {
-    bottom: 150px;
+    bottom: 120px;
+    width: 90%;
   }
-   .hero-content {
-        top: auto;
-        bottom: 120px;
-        left: 50%;
-        width: 325px;
-        transform: translateX(-50%);
-        text-align: center;
-        /* max-width: 130%; */
-    }
 }
 
 /* Extra small */
 @media (max-width: 374px) {
   .hero-content {
-    bottom: 130px;
+    bottom: 120px;
+    width: 92%;
   }
 
   .hero-content h1 {
     font-size: 26px;
   }
-   .hero-content {
-        top: auto;
-        bottom: 120px;
-        left: 50%;
-        width: 225px;
-        transform: translateX(-50%);
-        text-align: center;
-        /* max-width: 130%; */
-    }
 }
