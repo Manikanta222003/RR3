@@ -8,43 +8,62 @@ export const addProperty = async (req, res) => {
     const {
       title,
       location,
-      city,
-      locality,
-      typology,
-      status,
+      flatType,
+      constructionStatus,
       unitSize,
       price,
+      uds,
+      projectCode,
+      remarks,
+      facing = [],          // ✅ ARRAY
       showOnHome = false,
-      useAsBanner = false,
       isNewLaunch = true,
       images = [],
     } = req.body;
 
-    if (!title || !location) {
+    /* =========================
+       VALIDATION
+    ========================= */
+    if (!title || !location || !flatType || !constructionStatus) {
       return res.status(400).json({
-        message: "Title and location are required",
+        message: "Required fields missing",
       });
     }
 
-    /* 🔒 REMOVE DUPLICATE IMAGES */
+    if (!Array.isArray(images) || images.length === 0) {
+      return res.status(400).json({
+        message: "At least one image is required",
+      });
+    }
+
+    /* =========================
+       REMOVE DUPLICATE IMAGES
+    ========================= */
     const uniqueImagesMap = new Map();
+
     images.forEach((img) => {
       if (img?.url && !uniqueImagesMap.has(img.url)) {
-        uniqueImagesMap.set(img.url, img);
+        uniqueImagesMap.set(img.url, {
+          url: img.url,
+          isMain: !!img.isMain,
+          isPropertyBanner: !!img.isPropertyBanner,
+          isHomeBanner: !!img.isHomeBanner,
+        });
       }
     });
 
     const property = await Property.create({
       title,
       location,
-      city,
-      locality,
-      typology,
-      status,
+      flatType,
+      constructionStatus,
       unitSize,
       price,
+      uds,
+      projectCode,
+      remarks,
+      facing, // ✅ MULTI
       showOnHome,
-      useAsBanner,
       isNewLaunch,
       images: Array.from(uniqueImagesMap.values()),
     });
@@ -69,7 +88,6 @@ export const getProperties = async (req, res) => {
     const properties = await Property.find().sort({ createdAt: -1 });
     res.json(properties);
   } catch (err) {
-    console.error("GET PROPERTIES ERROR:", err);
     res.status(500).json({
       message: "Failed to load properties",
     });
@@ -81,9 +99,10 @@ export const getProperties = async (req, res) => {
 ========================= */
 export const getHomeProperties = async (req, res) => {
   try {
-    const properties = await Property.find({ showOnHome: true }).sort({
-      createdAt: -1,
-    });
+    const properties = await Property.find({
+      showOnHome: true,
+    }).sort({ createdAt: -1 });
+
     res.json(properties);
   } catch (err) {
     res.status(500).json({
@@ -93,7 +112,7 @@ export const getHomeProperties = async (req, res) => {
 };
 
 /* =========================
-   TOGGLE HOME PAGE VISIBILITY
+   TOGGLE HOME VISIBILITY
 ========================= */
 export const toggleHomeVisibility = async (req, res) => {
   try {
@@ -107,14 +126,12 @@ export const toggleHomeVisibility = async (req, res) => {
     await property.save();
 
     res.json({
-      message: property.showOnHome
-        ? "Property added to Home page"
-        : "Property removed from Home page",
+      message: "Home visibility updated",
       property,
     });
   } catch (err) {
     res.status(500).json({
-      message: "Failed to update Home visibility",
+      message: "Failed to update home visibility",
     });
   }
 };
@@ -134,20 +151,18 @@ export const toggleNewLaunch = async (req, res) => {
     await property.save();
 
     res.json({
-      message: property.isNewLaunch
-        ? "Marked as New Launch"
-        : "Removed from New Launch",
+      message: "New launch status updated",
       property,
     });
   } catch (err) {
     res.status(500).json({
-      message: "Failed to update New Launch status",
+      message: "Failed to update new launch status",
     });
   }
 };
 
 /* =========================
-   DELETE PROPERTY (ADMIN)
+   DELETE PROPERTY
 ========================= */
 export const deleteProperty = async (req, res) => {
   try {
@@ -161,20 +176,18 @@ export const deleteProperty = async (req, res) => {
 };
 
 /* =========================
-   GET PROPERTY FILTER OPTIONS
+   FILTER OPTIONS API
 ========================= */
 export const getPropertyFilters = async (req, res) => {
   try {
-    const cities = await Property.distinct("city");
-    const localities = await Property.distinct("locality");
-    const typologies = await Property.distinct("typology");
-    const statuses = await Property.distinct("status");
+    const flatTypes = await Property.distinct("flatType");
+    const constructionStatus = await Property.distinct("constructionStatus");
+    const facings = await Property.distinct("facing");
 
     res.json({
-      cities,
-      localities,
-      typologies,
-      statuses,
+      flatTypes,
+      constructionStatus,
+      facings,
     });
   } catch (err) {
     res.status(500).json({
@@ -184,24 +197,20 @@ export const getPropertyFilters = async (req, res) => {
 };
 
 /* =========================
-   GET PROPERTY BANNER IMAGES
+   PROPERTY PAGE BANNER SLIDER
 ========================= */
-export const getBannerImages = async (req, res) => {
+export const getPropertyBannerImages = async (req, res) => {
   try {
     const properties = await Property.find({
-      useAsBanner: true,
-      "images.isBanner": true,
+      "images.isPropertyBanner": true,
     });
 
-    const bannerImages = properties.flatMap((property) =>
-      property.images
-        .filter((img) => img.isBanner)
-        .map((img) => img.url)
+    const banners = properties.flatMap((p) =>
+      p.images.filter((img) => img.isPropertyBanner)
     );
 
-    res.json(bannerImages);
+    res.json(banners);
   } catch (err) {
-    console.error("GET PROPERTY BANNERS ERROR:", err);
     res.status(500).json({
       message: "Failed to load property banners",
     });
