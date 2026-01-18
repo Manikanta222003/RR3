@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../styles/ContactsPage.css";
 
+const API_BASE = "https://rr3-1-wo2n.onrender.com"; // ✅ Render backend
+
 const ContactPage = () => {
   const [form, setForm] = useState({
     firstName: "",
@@ -10,21 +12,57 @@ const ContactPage = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  /* =========================
+     SUBMIT CONTACT FORM
+  ========================= */
   const submitForm = async (e) => {
     e.preventDefault();
-    alert("Message sent successfully");
 
-    setForm({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
+    if (!form.firstName || !form.email || !form.phone || !form.message) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${API_BASE}/contact/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data?.message || "Failed to send message");
+        return;
+      }
+
+      alert("✅ Message sent successfully");
+
+      // RESET FORM
+      setForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error("CONTACT SUBMIT ERROR:", err);
+      alert("❌ Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,6 +90,7 @@ const ContactPage = () => {
                   onChange={handleChange}
                   required
                 />
+
                 <input
                   type="text"
                   name="lastName"
@@ -88,7 +127,9 @@ const ContactPage = () => {
                 required
               />
 
-              <button type="submit">Send Message</button>
+              <button type="submit" disabled={loading}>
+                {loading ? "Sending..." : "Send Message"}
+              </button>
             </form>
           </div>
 
