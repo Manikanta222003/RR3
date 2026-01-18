@@ -1,47 +1,62 @@
 import mongoose from "mongoose";
 
-const propertySchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  location: { type: String, required: true },
-  city: String,
-  locality: String,
-  typology: String,
-  status: String,
-  unitSize: String,
-  price: String,
+const propertySchema = new mongoose.Schema(
+  {
+    /* BASIC DETAILS */
+    title: { type: String, required: true },
+    location: { type: String, required: true },
 
-  // 🔥 HOME PAGE VISIBILITY
-  showOnHome: {
-    type: Boolean,
-    default: false,
-  },
-
-  // 🔥 PROPERTY CAN BE USED AS BANNER
-  useAsBanner: {
-    type: Boolean,
-    default: false,
-  },
-
-  // 🔥 NEW LAUNCH FLAG (ADD THIS)
-  isNewLaunch: {
-    type: Boolean,
-    default: true,
-  },
-
-  images: [
-    {
-      url: { type: String, required: true },
-      isBanner: {
-        type: Boolean,
-        default: false,
-      },
+    /* FLAT TYPE */
+    flatType: {
+      type: String,
+      enum: ["2BHK", "3BHK", "4BHK"],
+      required: true,
     },
-  ],
 
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    /* CONSTRUCTION STATUS */
+    constructionStatus: {
+      type: String,
+      enum: ["Ready to Move", "Under Construction"],
+      required: true,
+    },
+
+    unitSize: String,
+    price: String,
+
+    /* EXTRA DETAILS */
+    projectCode: String,
+    uds: String,
+    remarks: String,
+
+    /* MULTIPLE FACING */
+    facing: {
+      type: [String],
+      enum: ["North", "South", "East", "West"],
+      default: [],
+    },
+
+    /* VISIBILITY */
+    showOnHome: {
+      type: Boolean,
+      default: false,
+    },
+
+    isNewLaunch: {
+      type: Boolean,
+      default: true,
+    },
+
+    /* IMAGES */
+    images: [
+      {
+        url: { type: String, required: true },
+        isMain: { type: Boolean, default: false },
+        isPropertyBanner: { type: Boolean, default: false },
+        isHomeBanner: { type: Boolean, default: false },
+      },
+    ],
   },
-});
+  { timestamps: true }
+);
 
 export default mongoose.model("Property", propertySchema);
