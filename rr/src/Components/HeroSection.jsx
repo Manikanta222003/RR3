@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
-import bgImage1 from "../assets/Images/website-banner.jpeg";
+import bgImage1 from "../assets/Images/for-pc.jpeg";
 
 const API_BASE = "https://rr3-1-wo2n.onrender.com";
 
