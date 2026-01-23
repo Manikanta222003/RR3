@@ -16,7 +16,7 @@
 /* ================= HERO ================= */
 .hero {
   height: 80vh;
-  background: url("/images/About_us_image.png")
+  background: url("/images/About_us_1.jpeg")
     center / cover no-repeat;
   position: relative;
 }
