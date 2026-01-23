@@ -1,6 +1,8 @@
 
 import React from "react";
 import "./AboutPage.css";
+import local from "../assets/Images/local_expertise1.jpeg";
+import per from "../assets/Images/Personalised_service.jpeg";
 
 const AboutUs = () => {
   return (
@@ -43,7 +45,7 @@ const AboutUs = () => {
         <div className="why-cards">
           <div className="card">
             <img
-              src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+              src={local}
               alt="Local expertise"
             />
             <h3>Local Expertise</h3>
@@ -52,7 +54,7 @@ const AboutUs = () => {
 
           <div className="card">
             <img
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
+              src={per}
               alt="Personalized service"
             />
             <h3>Personalized Service</h3>
