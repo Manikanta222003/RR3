@@ -1,6 +1,6 @@
 // src/components/whychoose/WhyChooseUs.jsx
 import "./WhyChooseUs.css";
-import chooseImg from "../assets/Images/whychoose.jpeg";
+import chooseImg from "../assets/Images/Why_choose_us_1.jpeg";
 
 function WhyChooseUs() {
   return (
