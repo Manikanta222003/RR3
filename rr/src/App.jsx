@@ -16,6 +16,7 @@ import WhyChooseUs from "./Components/WhyChooseUs.jsx";
 import AboutUs from "./Pages/AboutPage.jsx";
 import Contact from "./Pages/ContactsPage.jsx";
 import Properties_page from "./Pages/Properties_page.jsx";
+import Services from "./Pages/Services.jsx";
 
 /* CONTACT POPUP */
 import ContactPopup from "./Components/ContactPopup.jsx";
@@ -95,6 +96,7 @@ function App() {
         <Route element={<WebLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/aboutus" element={<AboutUs />} />
+           <Route path="/services" element={<Services />} />
           <Route path="/property" element={<Properties_page />} />
 
           {/* Separate contact page */}
