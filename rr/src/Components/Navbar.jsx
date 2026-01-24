@@ -20,7 +20,7 @@ function Navbar() {
         {/* DESKTOP MENU */}
         <nav className="nav-menu">
           <a href="/">Home</a>
-          <a href="/#services">Services</a>
+          <a href="/services">Services</a>
           <a href="/property">Properties</a>
           <a href="/aboutus">About Us</a>
           <a href="/contacts">Contact Us</a>
@@ -40,7 +40,7 @@ function Navbar() {
         {/* MOBILE MENU */}
         <nav className={`nav-menu-mobile ${isOpen ? "show" : ""}`}>
           <a href="/" onClick={closeMenu}>Home</a>
-          <a href="/#services" onClick={closeMenu}>Services</a>
+          <a href="/services" onClick={closeMenu}>Services</a>
           <a href="/property" onClick={closeMenu}>Properties</a>
           <a href="/aboutus" onClick={closeMenu}>About Us</a>
           <a href="/contacts" onClick={closeMenu}>Contact Us</a>
