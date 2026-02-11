@@ -178,23 +178,32 @@ export const deleteProperty = async (req, res) => {
 /* =========================
    FILTER OPTIONS API
 ========================= */
+/* =========================
+   FILTER OPTIONS API
+========================= */
 export const getPropertyFilters = async (req, res) => {
   try {
     const flatTypes = await Property.distinct("flatType");
     const constructionStatus = await Property.distinct("constructionStatus");
     const facings = await Property.distinct("facing");
+    const locations = await Property.distinct("location");
+    const prices = await Property.distinct("price");
 
     res.json({
       flatTypes,
       constructionStatus,
-      facings,
+      facings: facings.flat().filter((f) => f),
+      locations: locations.filter((l) => l && l.trim() !== ""),
+      prices: prices.filter((p) => p && p.trim() !== ""),
     });
   } catch (err) {
+    console.error("FILTER API ERROR:", err);
     res.status(500).json({
       message: "Failed to load filters",
     });
   }
 };
+
 
 /* =========================
    PROPERTY PAGE BANNER SLIDER
