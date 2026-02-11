@@ -83,16 +83,54 @@ export const addProperty = async (req, res) => {
 /* =========================
    GET ALL PROPERTIES (PUBLIC)
 ========================= */
+/* =========================
+   GET ALL PROPERTIES (WITH FILTERS)
+========================= */
 export const getProperties = async (req, res) => {
   try {
-    const properties = await Property.find().sort({ createdAt: -1 });
+    const {
+      location,
+      flatType,
+      constructionStatus,
+      price,
+      facing,
+      search,
+      projectCode,
+    } = req.query;
+
+    let filter = {};
+
+    if (location) filter.location = location;
+    if (flatType) filter.flatType = flatType;
+    if (constructionStatus)
+      filter.constructionStatus = constructionStatus;
+    if (price) filter.price = price;
+    if (projectCode) filter.projectCode = projectCode;
+
+    if (facing) {
+      filter.facing = { $in: [facing] };
+    }
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const properties = await Property.find(filter).sort({
+      createdAt: -1,
+    });
+
     res.json(properties);
   } catch (err) {
+    console.error("GET PROPERTIES ERROR:", err);
     res.status(500).json({
       message: "Failed to load properties",
     });
   }
 };
+
 
 /* =========================
    GET HOME PAGE PROPERTIES
