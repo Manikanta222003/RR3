@@ -25,11 +25,10 @@ connectDB();
 ========================= */
 app.use(
   cors({
-    origin: [
-      // "http://localhost:5173", // local dev
-      // "http://127.0.0.1:5173", // fallback
-      "https://rr-3.vercel.app", // production
-    ],
+     origin: [
+    "https://rr3.vercel.app",
+    "https://rrproperties.co.in"
+  ],
     credentials: true,
   })
 );
