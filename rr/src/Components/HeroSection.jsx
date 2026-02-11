@@ -15,10 +15,6 @@ const DEFAULT_SLIDE = {
   ctaText: "Apply",
 };
 
-const TYPOLOGY_OPTIONS = ["2BHK", "3BHK", "4BHK"];
-const STATUS_OPTIONS = ["Ready to Move", "Under Construction"];
-const FACING_OPTIONS = ["North", "South", "East", "West"];
-
 function HeroSection() {
   const navigate = useNavigate();
 
@@ -27,6 +23,7 @@ function HeroSection() {
 
   const [locations, setLocations] = useState([]);
   const [prices, setPrices] = useState([]);
+  const [facings, setFacings] = useState([]);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -69,43 +66,25 @@ function HeroSection() {
   }, []);
 
   /* =========================
-     LOAD LOCATIONS (Dynamic)
+     LOAD FILTERS (CORRECT API)
   ========================= */
   useEffect(() => {
-    const loadLocations = async () => {
+    const loadFilters = async () => {
       try {
-        const res = await fetch(`${API_BASE}/locations`);
+        const res = await fetch(`${API_BASE}/property/filters`);
         const data = await res.json();
 
-        if (Array.isArray(data)) {
-          setLocations(data);
-        }
+        console.log("FILTER DATA:", data);
+
+        setLocations(data.locations || []);
+        setPrices(data.prices || []);
+        setFacings(data.facings || []);
       } catch (err) {
-        console.log("Failed to load locations");
+        console.log("Failed to load filters");
       }
     };
 
-    loadLocations();
-  }, []);
-
-  /* =========================
-     LOAD PRICES (Dynamic)
-  ========================= */
-  useEffect(() => {
-    const loadPrices = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/prices`);
-        const data = await res.json();
-
-        if (Array.isArray(data)) {
-          setPrices(data);
-        }
-      } catch (err) {
-        console.log("Failed to load prices");
-      }
-    };
-
-    loadPrices();
+    loadFilters();
   }, []);
 
   /* =========================
@@ -136,7 +115,7 @@ function HeroSection() {
     <section className="hero">
       {/* Background Image */}
       <img
-        src={activeSlide.image || bgImage1}
+        src={activeSlide.image}
         alt="Hero Banner"
         className="hero-bg"
       />
@@ -189,11 +168,9 @@ function HeroSection() {
             }
           >
             <option value="">Flat Type</option>
-            {TYPOLOGY_OPTIONS.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
+            <option value="2BHK">2BHK</option>
+            <option value="3BHK">3BHK</option>
+            <option value="4BHK">4BHK</option>
           </select>
 
           {/* STATUS */}
@@ -207,11 +184,8 @@ function HeroSection() {
             }
           >
             <option value="">Status</option>
-            {STATUS_OPTIONS.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
+            <option value="Ready to Move">Ready to Move</option>
+            <option value="Under Construction">Under Construction</option>
           </select>
 
           {/* PRICE (Dynamic) */}
@@ -229,7 +203,7 @@ function HeroSection() {
             ))}
           </select>
 
-          {/* FACING */}
+          {/* FACING (Dynamic from DB) */}
           <select
             value={filters.facing}
             onChange={(e) =>
@@ -237,8 +211,8 @@ function HeroSection() {
             }
           >
             <option value="">Facing</option>
-            {FACING_OPTIONS.map((face) => (
-              <option key={face} value={face}>
+            {facings.map((face, index) => (
+              <option key={index} value={face}>
                 {face}
               </option>
             ))}
