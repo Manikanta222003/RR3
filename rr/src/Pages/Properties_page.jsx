@@ -255,38 +255,89 @@ function Properties_page() {
       </div>
 
       {/* ================= PROPERTY CARDS ================= */}
-      <div className="property-flex">
-        {properties.length === 0 ? (
-          <p style={{ textAlign: "center", marginTop: "20px" }}>
-            No properties found.
-          </p>
-        ) : (
-          properties.map((item) => (
-            <div className="property-card" key={item._id}>
-              <div className="property-image">
-                <img src={getCardImage(item)} alt={item.title} />
-                <div className="property-logo">
-                  <img src={logo} alt="Logo" />
-                </div>
-              </div>
+     {/* ================= PROPERTY CARDS ================= */}
+<div className="property-flex">
+  {properties.length === 0 ? (
+    <p style={{ textAlign: "center", marginTop: "20px" }}>
+      No properties found.
+    </p>
+  ) : (
+    properties.map((item) => (
+      <div className="property-card" key={item._id}>
+        <div className="property-image">
+          <img src={getCardImage(item)} alt={item.title} />
 
-              <div className="property-content">
-                <h3>{item.title}</h3>
-                <p>📍 {item.location}</p>
-                <p><strong>Flat Type:</strong> {item.flatType}</p>
-                <p><strong>Price:</strong> {item.price}</p>
-
-                <Link to="/contacts">
-                  <button className="property-btn">
-                    Contact Us
-                  </button>
-                </Link>
-              </div>
+          {/* ✅ STATUS TAG */}
+          {item.constructionStatus && (
+            <div className="property-status-tag">
+              {item.constructionStatus}
             </div>
-          ))
-        )}
+          )}
+
+          <div className="property-logo">
+            <img src={logo} alt="Logo" />
+          </div>
+        </div>
+
+        <div className="property-content">
+          <h3>{item.title}</h3>
+
+          <p>📍 {item.location}</p>
+
+          {item.flatType && (
+            <p>
+              <strong>Flat Type:</strong> {item.flatType}
+            </p>
+          )}
+
+          {item.projectCode && (
+            <p>
+              <strong>Project Code:</strong> {item.projectCode}
+            </p>
+          )}
+
+          {item.facing && item.facing.length > 0 && (
+            <p>
+              <strong>Facing:</strong> {item.facing.join(", ")}
+            </p>
+          )}
+
+          {item.unitSize && (
+            <p>
+              <strong>Unit Size:</strong> {item.unitSize}
+            </p>
+          )}
+
+          {item.uds && (
+            <p>
+              <strong>UDS:</strong> {item.uds}
+            </p>
+          )}
+
+          {item.price && (
+            <p>
+              <strong>Price:</strong> {item.price}
+            </p>
+          )}
+
+          {item.remarks && (
+            <p className="property-remarks">
+              <strong>Remarks:</strong> {item.remarks}
+            </p>
+          )}
+
+          <Link to="/contacts">
+            <button className="property-btn">
+              Contact Us
+            </button>
+          </Link>
+        </div>
       </div>
-    </section>
+    ))
+  )}
+</div>
+
+  </section>
   );
 }
 
