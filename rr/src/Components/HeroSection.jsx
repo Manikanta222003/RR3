@@ -5,7 +5,7 @@ import bgImage1 from "../assets/Images/for-pc.jpeg";
 
 const API_BASE = "https://rr3-1-wo2n.onrender.com";
 
-/* 🔒 DEFAULT SLIDE */
+/* DEFAULT SLIDE */
 const DEFAULT_SLIDE = {
   id: "default",
   image: bgImage1,
@@ -15,9 +15,9 @@ const DEFAULT_SLIDE = {
   ctaText: "Apply",
 };
 
-// const FACING_OPTIONS = ["North", "East", "South", "West"];
 const TYPOLOGY_OPTIONS = ["2BHK", "3BHK", "4BHK"];
 const STATUS_OPTIONS = ["Ready to Move", "Under Construction"];
+const FACING_OPTIONS = ["North", "South", "East", "West"];
 
 function HeroSection() {
   const navigate = useNavigate();
@@ -25,17 +25,21 @@ function HeroSection() {
   const [slides, setSlides] = useState([DEFAULT_SLIDE]);
   const [current, setCurrent] = useState(0);
 
-  /* ✅ SAME FILTERS AS PROPERTIES PAGE */
+  const [locations, setLocations] = useState([]);
+  const [prices, setPrices] = useState([]);
+
   const [filters, setFilters] = useState({
     search: "",
     projectCode: "",
+    location: "",
     flatType: "",
     constructionStatus: "",
-    facing: [],
+    price: "",
+    facing: "",
   });
 
   /* =========================
-     LOAD BANNERS (CLOUDINARY)
+     LOAD BANNERS
   ========================= */
   useEffect(() => {
     const loadBanners = async () => {
@@ -57,11 +61,51 @@ function HeroSection() {
           setSlides([DEFAULT_SLIDE, ...backendSlides]);
         }
       } catch (err) {
-        console.log("Hero banners failed, using default");
+        console.log("Failed to load banners");
       }
     };
 
     loadBanners();
+  }, []);
+
+  /* =========================
+     LOAD LOCATIONS (Dynamic)
+  ========================= */
+  useEffect(() => {
+    const loadLocations = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/locations`);
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setLocations(data);
+        }
+      } catch (err) {
+        console.log("Failed to load locations");
+      }
+    };
+
+    loadLocations();
+  }, []);
+
+  /* =========================
+     LOAD PRICES (Dynamic)
+  ========================= */
+  useEffect(() => {
+    const loadPrices = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/prices`);
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setPrices(data);
+        }
+      } catch (err) {
+        console.log("Failed to load prices");
+      }
+    };
+
+    loadPrices();
   }, []);
 
   /* =========================
@@ -71,26 +115,19 @@ function HeroSection() {
     if (slides.length <= 1) return;
 
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+      setCurrent((prev) =>
+        prev === slides.length - 1 ? 0 : prev + 1
+      );
     }, 6000);
 
     return () => clearInterval(timer);
   }, [slides]);
 
-  const toggleFacing = (face) => {
-    setFilters((prev) => ({
-      ...prev,
-      facing: prev.facing.includes(face)
-        ? prev.facing.filter((f) => f !== face)
-        : [...prev.facing, face],
-    }));
-  };
-
-  /* ✅ APPLY BUTTON NAVIGATION */
+  /* =========================
+     APPLY FILTERS
+  ========================= */
   const applyFilters = () => {
-    navigate("/property", {
-      state: filters,
-    });
+    navigate("/property", { state: filters });
   };
 
   const activeSlide = slides[current] || DEFAULT_SLIDE;
@@ -108,8 +145,10 @@ function HeroSection() {
         <h1>{activeSlide.titleLine1}</h1>
         <p>{activeSlide.description}</p>
 
-        {/* ✅ HERO FILTERS (SAME AS PROPERTIES PAGE) */}
+        {/* FILTER BAR */}
         <div className="hero-filter-bar">
+
+          {/* SEARCH */}
           <input
             placeholder="Search project or location"
             value={filters.search}
@@ -118,6 +157,7 @@ function HeroSection() {
             }
           />
 
+          {/* PROJECT CODE */}
           <input
             placeholder="Project Code"
             value={filters.projectCode}
@@ -126,6 +166,22 @@ function HeroSection() {
             }
           />
 
+          {/* LOCATION (Dynamic) */}
+          <select
+            value={filters.location}
+            onChange={(e) =>
+              setFilters({ ...filters, location: e.target.value })
+            }
+          >
+            <option value="">Location</option>
+            {locations.map((loc, index) => (
+              <option key={index} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
+
+          {/* FLAT TYPE */}
           <select
             value={filters.flatType}
             onChange={(e) =>
@@ -133,13 +189,14 @@ function HeroSection() {
             }
           >
             <option value="">Flat Type</option>
-            {TYPOLOGY_OPTIONS.map((t) => (
-              <option key={t} value={t}>
-                {t}
+            {TYPOLOGY_OPTIONS.map((type) => (
+              <option key={type} value={type}>
+                {type}
               </option>
             ))}
           </select>
 
+          {/* STATUS */}
           <select
             value={filters.constructionStatus}
             onChange={(e) =>
@@ -150,41 +207,61 @@ function HeroSection() {
             }
           >
             <option value="">Status</option>
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
+            {STATUS_OPTIONS.map((status) => (
+              <option key={status} value={status}>
+                {status}
               </option>
             ))}
           </select>
 
-          {/* <div className="hero-facing">
-            {FACING_OPTIONS.map((f) => (
-              <label key={f}>
-                <input
-                  type="checkbox"
-                  checked={filters.facing.includes(f)}
-                  onChange={() => toggleFacing(f)}
-                />
-                {f}
-              </label>
+          {/* PRICE (Dynamic) */}
+          <select
+            value={filters.price}
+            onChange={(e) =>
+              setFilters({ ...filters, price: e.target.value })
+            }
+          >
+            <option value="">Price</option>
+            {prices.map((price, index) => (
+              <option key={index} value={price}>
+                {price}
+              </option>
             ))}
-          </div> */}
+          </select>
 
+          {/* FACING */}
+          <select
+            value={filters.facing}
+            onChange={(e) =>
+              setFilters({ ...filters, facing: e.target.value })
+            }
+          >
+            <option value="">Facing</option>
+            {FACING_OPTIONS.map((face) => (
+              <option key={face} value={face}>
+                {face}
+              </option>
+            ))}
+          </select>
+
+          {/* APPLY BUTTON */}
           <button className="hero-btn" onClick={applyFilters}>
             Apply
           </button>
+
         </div>
       </div>
 
-      {/* Slider Dots */}
+      {/* SLIDER DOTS */}
       {slides.length > 1 && (
         <div className="hero-dots">
           {slides.map((slide, index) => (
             <button
               key={slide.id}
-              className={`hero-dot ${index === current ? "active" : ""}`}
+              className={`hero-dot ${
+                index === current ? "active" : ""
+              }`}
               onClick={() => setCurrent(index)}
-              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
