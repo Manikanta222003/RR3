@@ -23,15 +23,13 @@ connectDB();
 /* =========================
    MIDDLEWARES
 ========================= */
-app.use(
-  cors({
-     origin: [
+app.use(cors({
+  origin: [
     "https://rr3.vercel.app",
     "https://rrproperties.co.in"
   ],
-    credentials: true,
-  })
-);
+  credentials: true
+}));
 
 
 app.use(express.json());
