@@ -141,7 +141,7 @@ const AboutUs = () => {
       {/* CTA */}
       <section className="cta">
         <h2>Find Your Dream Home Today!</h2>
-        <p>Ready to start your real estate journey in Kakinada?</p>
+        <p>Ready to Start Your Property Journey in Kakinada?</p>
         <a href="contacts">
         <button>Contact Us</button>
         </a>
