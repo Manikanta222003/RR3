@@ -17,7 +17,7 @@ function AboutSection() {
 
         {/* Right: content */}
         <div className="about-content">
-          <h3 className="about-title">Apartment Marketing Consultancy, Made Simple.</h3>
+          <h3 className="about-title">Your Journey, Guided with Expertise.</h3>
 
           <p className="about-text">
             At RR Properties we specialize in guiding buyers and investors
