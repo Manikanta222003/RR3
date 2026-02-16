@@ -269,7 +269,7 @@ function Properties_page() {
         />
 
 
-        <input
+        {/* <input
           placeholder="Project Code"
           value={filters.projectCode}
           onChange={(e) =>
@@ -278,7 +278,7 @@ function Properties_page() {
               projectCode: e.target.value,
             })
           }
-        />
+        /> */}
 
 
         <select
