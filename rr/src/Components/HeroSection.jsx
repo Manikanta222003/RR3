@@ -15,6 +15,23 @@ const DEFAULT_SLIDE = {
   ctaText: "Apply",
 };
 
+/* FIXED PRICE RANGES */
+const priceRanges = [
+  "0-30 Lakhs",
+  "30-40 Lakhs",
+  "40-50 Lakhs",
+  "50-60 Lakhs",
+  "60-70 Lakhs",
+  "70-80 Lakhs",
+  "80-90 Lakhs",
+  "90 Lakhs - 1 Crore",
+  "1 - 1.2 Crore",
+  "1.2 - 1.4 Crore",
+  "1.4 - 1.6 Crore",
+  "1.6 - 1.8 Crore",
+  "1.8 - 2 Crore",
+];
+
 function HeroSection() {
   const navigate = useNavigate();
 
@@ -22,7 +39,6 @@ function HeroSection() {
   const [current, setCurrent] = useState(0);
 
   const [locations, setLocations] = useState([]);
-  const [prices, setPrices] = useState([]);
   const [facings, setFacings] = useState([]);
 
   const [filters, setFilters] = useState({
@@ -66,7 +82,7 @@ function HeroSection() {
   }, []);
 
   /* =========================
-     LOAD FILTERS (CORRECT API)
+     LOAD FILTERS
   ========================= */
   useEffect(() => {
     const loadFilters = async () => {
@@ -74,10 +90,7 @@ function HeroSection() {
         const res = await fetch(`${API_BASE}/property/filters`);
         const data = await res.json();
 
-        console.log("FILTER DATA:", data);
-
         setLocations(data.locations || []);
-        setPrices(data.prices || []);
         setFacings(data.facings || []);
       } catch (err) {
         console.log("Failed to load filters");
@@ -145,7 +158,7 @@ function HeroSection() {
             }
           />
 
-          {/* LOCATION (Dynamic) */}
+          {/* LOCATION */}
           <select
             value={filters.location}
             onChange={(e) =>
@@ -188,22 +201,23 @@ function HeroSection() {
             <option value="Under Construction">Under Construction</option>
           </select>
 
-          {/* PRICE (Dynamic) */}
+          {/* PRICE RANGE (FIXED) */}
           <select
             value={filters.price}
             onChange={(e) =>
               setFilters({ ...filters, price: e.target.value })
             }
           >
-            <option value="">Price</option>
-            {prices.map((price, index) => (
-              <option key={index} value={price}>
-                {price}
+            <option value="">Price Range</option>
+
+            {priceRanges.map((range, index) => (
+              <option key={index} value={range}>
+                {range}
               </option>
             ))}
           </select>
 
-          {/* FACING (Dynamic from DB) */}
+          {/* FACING */}
           <select
             value={filters.facing}
             onChange={(e) =>
