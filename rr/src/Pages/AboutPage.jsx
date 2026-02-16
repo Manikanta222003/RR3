@@ -75,18 +75,19 @@ const AboutUs = () => {
       {/* Achievements */}
       <section className="achievements">
         <div className="stats">
+           <div>
+            <h3>10+</h3>
+            <p>Years Experience</p>
+          </div>
           <div>
-            <h3>200+</h3>
-            <p>Properties Sold</p>
+            <h3>20+</h3>
+            <p>Projects Delivered</p>
           </div>
           <div>
             <h3>100+</h3>
             <p>Happy Customers</p>
           </div>
-          <div>
-            <h3>10+</h3>
-            <p>Years Experience</p>
-          </div>
+          
           <div>
             <h3>100%</h3>
             <p>Customer Satisfaction</p>
