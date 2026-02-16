@@ -10,7 +10,7 @@ function StorySection() {
           <h2 className="story-heading">Our Journey</h2>
 
           <p className="story-text">
-            Founded with a vision to simplify real estate, RR Properties has
+            Founded with a vision to simplify Apartment Marketing Consultancy, RR Properties has
             been helping families and investors find the right property with
             confidence. Our focus on transparency, market knowledge, and
             long-term value sets us apart.
