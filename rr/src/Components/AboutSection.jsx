@@ -6,7 +6,7 @@ function AboutSection() {
   return (
     <section className="about-section">
       <h2 className="about-top-heading">
-        We are a global, boutique real estate brokerage
+       We are a trusted, global Apartment Marketing Consultancy.
       </h2>
 
       <div className="about-wrapper">
@@ -17,7 +17,7 @@ function AboutSection() {
 
         {/* Right: content */}
         <div className="about-content">
-          <h3 className="about-title">The transfer of real estate made simple</h3>
+          <h3 className="about-title">Apartment Marketing Consultancy, Made Simple.</h3>
 
           <p className="about-text">
             At RR Properties we specialize in guiding buyers and investors
