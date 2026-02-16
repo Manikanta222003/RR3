@@ -36,7 +36,7 @@ function FAQSection() {
       <div className="faq-wrapper">
         <h2 className="faq-heading">Frequently Asked Questions</h2>
         <p className="faq-subtitle">
-          Find answers to common questions about our real estate services.
+          Find Answers to Common Questions About Our Property Services.
         </p>
 
         {/* Loading */}
