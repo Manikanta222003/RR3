@@ -32,7 +32,7 @@ function AboutSection() {
             <a href="contacts">
             <button className="btn-primary">Book a Consultation</button>
             </a>
-            <a href="property">
+            <a href="services">
             <button className="btn-outline">View Our Services</button>
             </a>
           </div>
