@@ -86,7 +86,7 @@ export default function Services() {
         {/* Services Section */}
         <div className="section-title">
           <h2>Services We Offer</h2>
-          <p>Comprehensive solutions for your real estate journey</p>
+          <p>Comprehensive Guidance for Every Step of Your Journey.</p>
         </div>
 
         <div className="services-grid">
@@ -133,3 +133,4 @@ export default function Services() {
     </div>
   );
 }
+
