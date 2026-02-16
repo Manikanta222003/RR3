@@ -7,7 +7,7 @@ function StorySection() {
       <div className="story-wrapper">
         {/* LEFT: Our Story */}
         <div className="story-left">
-          <h2 className="story-heading">Our Story</h2>
+          <h2 className="story-heading">Our Journey</h2>
 
           <p className="story-text">
             Founded with a vision to simplify real estate, RR Properties has
@@ -25,26 +25,6 @@ function StorySection() {
           <a href="aboutus">
           <button className="story-btn">Read More About Us</button>
           </a>
-        </div>
-
-        {/* RIGHT: Our Founder card */}
-        <div className="story-right">
-          <div className="founder-card">
-            <div className="founder-icon-wrapper">
-              <div className="founder-icon-circle">
-                <span className="founder-icon">👤</span>
-              </div>
-            </div>
-
-            <h3 className="founder-title">Our Founder</h3>
-
-            <p className="founder-text">
-              RR Properties is led by an experienced real estate team dedicated
-              to building trust through honest advice, curated projects, and
-              seamless transactions. Their vision is to make property ownership
-              accessible, safe, and rewarding for everyone.
-            </p>
-          </div>
         </div>
       </div>
     </section>
