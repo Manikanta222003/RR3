@@ -150,13 +150,13 @@ function HeroSection() {
           />
 
           {/* PROJECT CODE */}
-          <input
+          {/* <input
             placeholder="Project Code"
             value={filters.projectCode}
             onChange={(e) =>
               setFilters({ ...filters, projectCode: e.target.value })
             }
-          />
+          /> */}
 
           {/* LOCATION */}
           <select
