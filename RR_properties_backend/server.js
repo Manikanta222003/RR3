@@ -25,7 +25,7 @@ connectDB();
 ========================= */
 app.use(cors({
   origin: [
-    "https://rr3.vercel.app",
+    // "https://rr3.vercel.app",
     "https://rrproperties.co.in"
   ],
   credentials: true
