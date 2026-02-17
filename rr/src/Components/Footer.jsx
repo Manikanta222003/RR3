@@ -33,7 +33,7 @@ function Footer() {
           <div className="footer-column">
             <h4 className="footer-heading">Quick Links</h4>
             <ul className="footer-links">
-              <a href="https://rrproperties.co.in/"><li>Website</li></a>
+              {/* <a href="https://rrproperties.co.in/"><li>Website</li></a> */}
               <a href="https://www.instagram.com/rr.properties_?igsh=MWJwcXQxdW1kazUycA=="><li>Instagram</li></a>
               <a href="https://www.facebook.com/rrpropertieskakinada?mibextid=ZbWKwL"><li>Facebook</li></a>
               <a href="https://youtube.com/@rrpropertieskakinada?si=8KVLpi99flerWjB4"><li>Youtube</li></a>
