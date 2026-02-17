@@ -11,7 +11,7 @@ const DEFAULT_SLIDE = {
   image: bgImage1,
   titleLine1: "From Dreams to Reality",
   description:
-    "We provide a complete service for the sale, purchase or rental of real estate.",
+    "We provide a complete service for the sale, purchase of Flats and Apartments.",
   ctaText: "Apply",
 };
 
