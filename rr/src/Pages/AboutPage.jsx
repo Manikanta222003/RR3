@@ -11,7 +11,7 @@ const AboutUs = () => {
       <section className="hero">
         <div className="hero-overlay">
           <h1>About Us</h1>
-          <p>RR Properties – Kakinada&apos;s Trusted Real Estate Experts</p>
+          <p>RR Properties – Kakinada's Trusted Apartment Marketing Consultancy</p>
         </div>
       </section>
 
