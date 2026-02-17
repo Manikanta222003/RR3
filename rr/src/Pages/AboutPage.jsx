@@ -22,7 +22,7 @@ const AboutUs = () => {
     <span className="mission-line"></span>
 
     <p>
-      At <strong>RR Properties</strong>, we aim to provide exceptional real estate
+      At <strong>RR Properties</strong>, we aim to provide exceptional Apartment Marketing Consultancy
       services in Kakinada. Our mission is to help you find your dream home or
       the perfect investment property with trust and transparency.
     </p>
