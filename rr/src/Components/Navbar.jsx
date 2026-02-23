@@ -14,7 +14,7 @@ function Navbar() {
         {/* LOGO */}
         <div className="nav-logo">
           <a href="/">
-          <img src={logo} alt="RR Properties Logo" /></a>
+          <img src={logo} alt="RR Properties" /></a>
         </div>
 
         {/* DESKTOP MENU */}
