@@ -11,7 +11,7 @@ function Footer() {
         {/* Column 1 - Logo */}
         <div className="footer-column footer-logo-col">
           <a href="/">
-          <img src={logo} alt="RR Properties Logo" className="footer-logo" />
+          <img src={logo} alt="RR Properties" className="footer-logo" />
           </a>
         </div>
 
