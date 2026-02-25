@@ -143,44 +143,41 @@ function Properties_page() {
   // /* =========================
   //    BANNER IMAGES
   // ========================= */
-  const bannerImages = [
+  // const bannerImages = [
 
-    ...new Set(
+  //   ...new Set(
 
-      properties.flatMap((p) =>
+  //     properties.flatMap((p) =>
 
-        p.images
-          ?.filter((img) => img.isPropertyBanner)
-          .map((img) => img.url)
+  //       p.images
+  //         ?.filter((img) => img.isPropertyBanner)
+  //         .map((img) => img.url)
 
-      )
+  //     )
 
-    ),
+  //   ),
 
-  ];
+  // ];
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (bannerImages.length <= 1) return;
+  //   if (bannerImages.length <= 1) return;
 
-    const timer = setInterval(() => {
+  //   const timer = setInterval(() => {
 
-      setCurrentBanner((prev) =>
+  //     setCurrentBanner((prev) =>
 
-        prev === bannerImages.length - 1 ? 0 : prev + 1
+  //       prev === bannerImages.length - 1 ? 0 : prev + 1
 
-      );
+  //     );
 
-    }, 4000);
+  //   }, 4000);
 
-    return () => clearInterval(timer);
+  //   return () => clearInterval(timer);
 
-  }, [bannerImages]);
-  {/* ================= TOP BANNER ================= */}
-{/* <div className="property-banner">
-  <img src={bgImage1} alt="Property Banner" />
-</div> */}
+  // }, [bannerImages]);
+
 
 
   /* =========================
@@ -238,21 +235,9 @@ function Properties_page() {
 
 
       {/* ================= TOP BANNER ================= */}
-      <div className="property-banner">
-
-        {bannerImages.length > 0 && (
-
-          <img
-
-            src={bannerImages[currentBanner]}
-
-            alt="Banner"
-
-          />
-
-        )}
-
-      </div>
+   <div className="property-banner">
+  <img src={bgImage1} alt="Property Banner" />
+</div>
 
 
       {/* ================= FILTER BAR ================= */}
