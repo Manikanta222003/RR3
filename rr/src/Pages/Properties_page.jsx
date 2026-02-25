@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import "../styles/Properties_page.css";
 import logo from "../assets/Images/rr-logo.png";
-
+import bgImage1 from "../assets/Images/for-pc.jpeg";
 const API_BASE = "https://rr3-1-wo2n.onrender.com";
 const FALLBACK_IMG = "/fallback.jpg";
 
@@ -179,7 +179,7 @@ function Properties_page() {
   // }, [bannerImages]);
   {/* ================= TOP BANNER ================= */}
 <div className="property-banner">
-  <img src={bannerImg} alt="Property Banner" />
+  <img src={bgImage1} alt="Property Banner" />
 </div>
 
 
