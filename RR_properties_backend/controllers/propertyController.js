@@ -9,7 +9,6 @@ const parsePriceRange = (range) => {
   try {
     let clean = range.replace(/ /g, "");
 
-    // Handle Lakhs
     if (clean.includes("Lakhs")) {
       clean = clean.replace("Lakhs", "");
       const [min, max] = clean.split("-");
@@ -20,7 +19,6 @@ const parsePriceRange = (range) => {
       };
     }
 
-    // Handle Crore
     if (clean.includes("Crore")) {
       clean = clean.replace("Crore", "");
       const [min, max] = clean.split("-");
@@ -33,17 +31,18 @@ const parsePriceRange = (range) => {
 
     return null;
 
-  } catch (err) {
+  } catch {
     return null;
   }
 };
 
 
 /* =========================
-   ADD PROPERTY (ADMIN)
+   ADD PROPERTY
 ========================= */
 export const addProperty = async (req, res) => {
   try {
+
     const {
       title,
       location,
@@ -60,7 +59,6 @@ export const addProperty = async (req, res) => {
       images = [],
     } = req.body;
 
-    /* VALIDATION */
     if (!title || !location || !flatType || !constructionStatus) {
       return res.status(400).json({
         message: "Required fields missing",
@@ -73,7 +71,6 @@ export const addProperty = async (req, res) => {
       });
     }
 
-    /* REMOVE DUPLICATE IMAGES */
     const uniqueImagesMap = new Map();
 
     images.forEach((img) => {
@@ -115,15 +112,50 @@ export const addProperty = async (req, res) => {
     res.status(500).json({
       message: "Failed to add property",
     });
+
+  }
+};
+/* =========================
+   TOGGLE HOME VISIBILITY
+========================= */
+export const toggleHomeVisibility = async (req, res) => {
+  try {
+
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({
+        message: "Property not found",
+      });
+    }
+
+    property.showOnHome = !property.showOnHome;
+
+    await property.save();
+
+    res.json({
+      message: "Home visibility updated",
+      showOnHome: property.showOnHome,
+      property
+    });
+
+  } catch (err) {
+
+    console.error("TOGGLE HOME ERROR:", err);
+
+    res.status(500).json({
+      message: "Failed to update home visibility",
+    });
+
   }
 };
 
-
 /* =========================
-   GET ALL PROPERTIES (WITH FILTERS)
+   GET ALL PROPERTIES
 ========================= */
 export const getProperties = async (req, res) => {
   try {
+
     const {
       location,
       flatType,
@@ -136,25 +168,12 @@ export const getProperties = async (req, res) => {
 
     let filter = {};
 
-    /* LOCATION */
-    if (location)
-      filter.location = location;
+    if (location) filter.location = location;
+    if (flatType) filter.flatType = flatType;
+    if (constructionStatus) filter.constructionStatus = constructionStatus;
+    if (projectCode) filter.projectCode = projectCode;
 
-    /* FLAT TYPE */
-    if (flatType)
-      filter.flatType = flatType;
-
-    /* STATUS */
-    if (constructionStatus)
-      filter.constructionStatus = constructionStatus;
-
-    /* PROJECT CODE */
-    if (projectCode)
-      filter.projectCode = projectCode;
-
-    /* PRICE RANGE FILTER */
     if (price) {
-
       const parsed = parsePriceRange(price);
 
       if (parsed) {
@@ -165,14 +184,11 @@ export const getProperties = async (req, res) => {
       }
     }
 
-    /* FACING FILTER */
     if (facing) {
       filter.facing = { $in: [facing] };
     }
 
-    /* SEARCH FILTER */
     if (search) {
-
       filter.$or = [
         { title: { $regex: search, $options: "i" } },
         { location: { $regex: search, $options: "i" } },
@@ -193,6 +209,7 @@ export const getProperties = async (req, res) => {
     res.status(500).json({
       message: "Failed to load properties",
     });
+
   }
 };
 
@@ -204,78 +221,153 @@ export const getHomeProperties = async (req, res) => {
   try {
 
     const properties = await Property.find({
-      showOnHome: true,
+      showOnHome: true
     }).sort({ createdAt: -1 });
 
     res.json(properties);
 
   } catch (err) {
 
+    console.error("HOME PROPERTIES ERROR:", err);
+
     res.status(500).json({
       message: "Failed to load home properties",
     });
+
   }
 };
 
 
 /* =========================
-   TOGGLE HOME VISIBILITY
+   GET SINGLE PROPERTY
 ========================= */
-export const toggleHomeVisibility = async (req, res) => {
+export const getPropertyById = async (req, res) => {
   try {
 
     const property = await Property.findById(req.params.id);
 
-    if (!property)
+    if (!property) {
       return res.status(404).json({
         message: "Property not found",
       });
+    }
 
-    property.showOnHome = !property.showOnHome;
+    res.json(property);
 
-    await property.save();
-
-    res.json({
-      message: "Home visibility updated",
-      property,
-    });
-
-  } catch (err) {
+  } catch {
 
     res.status(500).json({
-      message: "Failed to update home visibility",
+      message: "Failed to load property",
     });
+
   }
 };
 
 
 /* =========================
-   TOGGLE NEW LAUNCH
+   UPDATE PROPERTY
 ========================= */
-export const toggleNewLaunch = async (req, res) => {
+export const updateProperty = async (req, res) => {
   try {
 
     const property = await Property.findById(req.params.id);
 
-    if (!property)
+    if (!property) {
       return res.status(404).json({
         message: "Property not found",
       });
+    }
 
-    property.isNewLaunch = !property.isNewLaunch;
+    const {
+      title,
+      location,
+      flatType,
+      constructionStatus,
+      unitSize,
+      price,
+      uds,
+      projectCode,
+      remarks,
+      facing,
+      images = [],
+    } = req.body;
+
+    property.title = title;
+    property.location = location;
+    property.flatType = flatType;
+    property.constructionStatus = constructionStatus;
+    property.unitSize = unitSize;
+    property.price = price;
+    property.uds = uds;
+    property.projectCode = projectCode;
+    property.remarks = remarks;
+    property.facing = facing;
+
+    if (images.length > 0) {
+
+      const newImages = images.map((img) => ({
+        url: img.url,
+        isMain: !!img.isMain,
+        isPropertyBanner: !!img.isPropertyBanner,
+        isHomeBanner: !!img.isHomeBanner,
+      }));
+
+      property.images.push(...newImages);
+
+    }
 
     await property.save();
 
     res.json({
-      message: "New launch status updated",
+      message: "Property updated successfully",
       property,
     });
 
   } catch (err) {
 
+    console.error("UPDATE PROPERTY ERROR:", err);
+
     res.status(500).json({
-      message: "Failed to update new launch status",
+      message: "Failed to update property",
     });
+
+  }
+};
+
+
+/* =========================
+   DELETE PROPERTY IMAGE
+========================= */
+export const deletePropertyImage = async (req, res) => {
+  try {
+
+    const { propertyId, imageUrl } = req.body;
+
+    const property = await Property.findById(propertyId);
+
+    if (!property) {
+      return res.status(404).json({
+        message: "Property not found",
+      });
+    }
+
+    property.images = property.images.filter(
+      (img) => img.url !== imageUrl
+    );
+
+    await property.save();
+
+    res.json({
+      message: "Image deleted successfully",
+      property,
+    });
+
+  } catch {
+
+    res.status(500).json({
+      message: "Failed to delete image",
+    });
+
   }
 };
 
@@ -292,11 +384,12 @@ export const deleteProperty = async (req, res) => {
       message: "Property deleted permanently",
     });
 
-  } catch (err) {
+  } catch {
 
     res.status(500).json({
       message: "Failed to delete property",
     });
+
   }
 };
 
@@ -326,12 +419,13 @@ export const getPropertyFilters = async (req, res) => {
     res.status(500).json({
       message: "Failed to load filters",
     });
+
   }
 };
 
 
 /* =========================
-   PROPERTY PAGE BANNER SLIDER
+   PROPERTY BANNER IMAGES
 ========================= */
 export const getPropertyBannerImages = async (req, res) => {
   try {
@@ -346,10 +440,11 @@ export const getPropertyBannerImages = async (req, res) => {
 
     res.json(banners);
 
-  } catch (err) {
+  } catch {
 
     res.status(500).json({
       message: "Failed to load property banners",
     });
+
   }
 };
