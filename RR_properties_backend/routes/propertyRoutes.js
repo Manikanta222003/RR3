@@ -1,4 +1,3 @@
-
 import express from "express";
 import {
   addProperty,
@@ -23,14 +22,9 @@ const router = express.Router();
 router.post("/add", adminAuth, addProperty);
 
 /* ==============================
-   GET ALL PROPERTIES (PUBLIC)
+   GET ALL PROPERTIES
 ============================== */
 router.get("/", getProperties);
-
-/* ==============================
-   GET SINGLE PROPERTY (FOR EDIT PAGE)
-============================== */
-router.get("/:id", getPropertyById);
 
 /* ==============================
    GET HOME PAGE PROPERTIES
@@ -48,17 +42,22 @@ router.get("/banners", getPropertyBannerImages);
 router.get("/filters", getPropertyFilters);
 
 /* ==============================
-   UPDATE PROPERTY (ADMIN EDIT)
+   GET SINGLE PROPERTY
+============================== */
+router.get("/:id", getPropertyById);
+
+/* ==============================
+   UPDATE PROPERTY
 ============================== */
 router.put("/update/:id", adminAuth, updateProperty);
 
 /* ==============================
-   DELETE SINGLE IMAGE FROM PROPERTY
+   DELETE IMAGE
 ============================== */
 router.delete("/delete-image", adminAuth, deletePropertyImage);
 
 /* ==============================
-   TOGGLE HOME PAGE VISIBILITY
+   TOGGLE HOME VISIBILITY
 ============================== */
 router.patch("/toggle-home/:id", adminAuth, toggleHomeVisibility);
 
@@ -68,4 +67,3 @@ router.patch("/toggle-home/:id", adminAuth, toggleHomeVisibility);
 router.delete("/delete/:id", adminAuth, deleteProperty);
 
 export default router;
-
