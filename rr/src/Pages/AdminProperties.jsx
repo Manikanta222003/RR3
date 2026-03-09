@@ -352,7 +352,7 @@ function AdminProperties() {
       {/* FORM */}
       <div className="property-form-card">
 
-        <div className="form-grid">
+               <div className="form-grid">
 
           <input name="title" placeholder="Project Name"
             value={form.title} onChange={handleChange} />
@@ -388,8 +388,29 @@ function AdminProperties() {
           <input name="uds" placeholder="UDS"
             value={form.uds} onChange={handleChange} />
 
-          <textarea name="remarks" placeholder="Remarks"
-            value={form.remarks} onChange={handleChange} />
+          <textarea
+            name="remarks"
+            placeholder="Remarks"
+            value={form.remarks}
+            onChange={handleChange}
+          />
+
+          <div className="facing-options">
+            <label style={{ fontWeight: "600" }}>Facing</label>
+
+            <div className="facing-checkbox-group">
+              {FACING_OPTIONS.map((face) => (
+                <label key={face} className="facing-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={form.facing.includes(face)}
+                    onChange={() => toggleFacing(face)}
+                  />
+                  {face}
+                </label>
+              ))}
+            </div>
+          </div>
 
           <input
             ref={fileInputRef}
