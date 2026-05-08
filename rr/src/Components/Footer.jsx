@@ -19,13 +19,13 @@ function Footer() {
         <div className="footer-column footer-address">
           <h4 className="footer-heading">Our Address</h4>
           <p>
-            2nd floor, Venkata Narayana Street,
+            D.No. 69-5-8/A, 1st floor, Opp,
             <br />
-            Opp. Venkateswara Swamy Temple,
+              Opp. Old Trust Hospital,
             <br />
-            Gandhi Nagar, Kakinada,
+            Near Sarpavaram Jn, Kakinada,
             <br />
-            Andhra Pradesh 533004
+            Andhra Pradesh 533003
           </p>
         </div>
 
