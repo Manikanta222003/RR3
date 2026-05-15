@@ -139,11 +139,15 @@ const ContactPage = () => {
 
             <div className="info-item">
               <strong>Address</strong>
-              <p>
-                2nd floor, Venkata Narayana Street <br />
-                Pratap Nagar, Kakinada <br />
-                Andhra Pradesh 533004
-              </p>
+                <p>
+            D.No. 69-5-8/A, 1st floor, Opp,
+            <br />
+              Opp. Old Trust Hospital,
+            <br />
+            Near Sarpavaram Jn, Kakinada,
+            <br />
+            Andhra Pradesh 533003
+          </p>
             </div>
 
             <div className="info-item">
